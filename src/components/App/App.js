@@ -1,16 +1,33 @@
+/* External Dependencies */
 import React from 'react'
-import styles from './App.scss'
+import Immutable from 'immutable'
 
-export default () => (
-  <div>
-    <div className={styles.outer}>
-      out
-      <div className={styles.inner}>
-        out -> in
+/* Internal Dependencies */
+import styles from './App.scss'
+import LabelList from '../LabelList'
+import MemoEditor from '../MemoEditor'
+import MemoList from '../MemoList'
+
+class App extends React.Component {
+  constructor() {
+    super()
+    this.state = {
+      labels: Immutable.List(),
+      memos: Immutable.List(),
+      curLabel: Immutable.Map(),
+      curMemo: Immutable.Map(),
+    }
+  }
+
+  render() {
+    return (
+      <div className={styles.wrapper}>
+        <LabelList className={styles.labelList} />
+        <MemoList className={styles.memoList} />
+        <MemoEditor className={styles.memoEditor} />
       </div>
-    </div>
-    <div className={styles.inner}>
-      in
-    </div>
-  </div>
-)
+    )
+  }
+}
+
+export default App

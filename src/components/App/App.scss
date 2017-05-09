@@ -1,8 +1,28 @@
-.outer {
+.wrapper {
   display: flex;
-  color: blue;
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  min-width: 700px;
+  padding: 15px;
 
-  .inner {
-    color: red;
+  & > * {
+    height: 100%;
+    border: solid 2px black;
+
+    &:not(:last-child) {
+      margin-right: 20px;
+    }
+  }
+  .labelList {
+    width: 150px;
+  }
+  .memoList {
+    width: 200px;
+  }
+  .memoEditor {
+    flex: 1;
   }
 }
