@@ -19,9 +19,9 @@ export function create(memo) {
 }
 
 export function update(memoId, memo) {
-  return client.put(`memo/:${memoId}`, memo)
+  return client.put(`memo/${memoId}`, memo)
 }
 
 export function remove(memoId) {
-  return client.delete(`memo/:${memoId}`)
+  return client.delete(`memo/${memoId}`)
 }

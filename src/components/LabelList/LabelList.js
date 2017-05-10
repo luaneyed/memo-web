@@ -49,7 +49,7 @@ class LabelList extends RoutingComponent {
         <div
           className={classNames(styles.createLabel, styles.item)}
           onClick={this.onClickCreateLabel}>
-          라벨 추가하기
+          라벨 추가
         </div>
         <div className={styles.labels}>
           {labels.map(label =>

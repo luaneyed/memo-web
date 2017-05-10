@@ -3,12 +3,12 @@ import React from 'react'
 import qs from 'querystringify'
 
 class RoutingComponent extends React.Component {
-  getCurrentLabelId() {
-    return qs.parse(this.props.location.search).labelId
+  getCurrentLabelId(props = this.props) {
+    return qs.parse(props.location.search).labelId
   }
 
-  getCurrentMemoId() {
-    return qs.parse(this.props.location.search).memoId
+  getCurrentMemoId(props = this.props) {
+    return qs.parse(props.location.search).memoId
   }
 
   setCurrentLabelId(labelId) {

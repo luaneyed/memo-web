@@ -1,8 +1,7 @@
-$item-height: 35px;
-
 .item {
   display: flex;
-  height: $item-height;
+  height: 35px;
+  padding: 0 10px;
   justify-content: center;
   align-items: center;
   cursor: pointer;
@@ -14,7 +13,5 @@ $item-height: 35px;
 }
 
 .labels {
-  //height: calc(100% - #{$item-height});
-  bottom: 0;
   border: solid 2px black;
 }

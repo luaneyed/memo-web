@@ -1,0 +1,63 @@
+$header-height: 35px;
+
+.item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.header {
+  height: $header-height;
+  margin-bottom: 15px;
+
+  .createMemo, .startSelection {
+    width: 90px;
+    height: $header-height;
+    border: solid 2px black;
+    cursor: pointer;
+  }
+  .createMemo {
+    float: left;
+  }
+  .startSelection {
+    float: right;
+  }
+}
+
+.list {
+  border: solid 2px black;
+
+  .labelInfo {
+    display: flex;
+    height: 35px;
+    align-items: center;
+
+    .name, .functions {
+      align-items: center;
+    }
+    .name {
+      width: 95px;
+      margin-right: 10px;
+      padding-left: 10px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .functions {
+      display: flex;
+
+      .editName, .delete {
+        margin: 5px 5px 5px 0;
+        border: solid 1px black;
+        border-radius: 10px;
+        padding: 3px 5px;
+        font-size: 10px;
+        cursor: pointer;
+      }
+    }
+  }
+  .memoPreview {
+    height: 80px;
+    cursor: pointer;
+  }
+}

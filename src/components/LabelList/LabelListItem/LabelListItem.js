@@ -9,7 +9,8 @@ import styles from './LabelListItem.scss'
 
 const LabelListItem = ({ className, label, onClick }) => (
   <div className={classNames(styles.wrapper, className)} onClick={onClick}>
-    {`${label.get('name')} (${label.get('memoCount')})`}
+    <div className={styles.name}>{label.get('name')}</div>
+    <div className={styles.memoCount}>{`(${label.get('memoCount')})`}</div>
   </div>
 )
 
