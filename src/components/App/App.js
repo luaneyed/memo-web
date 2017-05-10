@@ -4,12 +4,13 @@ import Immutable from 'immutable'
 
 /* Internal Dependencies */
 import styles from './App.scss'
+import RoutingComponent from '../lib'
 import LabelList from '../LabelList'
 import MemoEditor from '../MemoEditor'
 import MemoList from '../MemoList'
 import { LabelAPI, MemoAPI } from '../../api'
 
-class App extends React.Component {
+class App extends RoutingComponent {
   constructor() {
     super()
     this.createLabel = this.createLabel.bind(this)

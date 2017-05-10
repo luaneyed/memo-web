@@ -13,3 +13,10 @@ const MemoList = ({ className }) => (
 )
 
 export default MemoList
+
+
+
+
+
+
+
