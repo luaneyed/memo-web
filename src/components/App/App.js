@@ -7,6 +7,7 @@ import styles from './App.scss'
 import LabelList from '../LabelList'
 import MemoEditor from '../MemoEditor'
 import MemoList from '../MemoList'
+import { LabelAPI } from '../../api'
 
 class App extends React.Component {
   constructor() {
@@ -19,10 +20,21 @@ class App extends React.Component {
     }
   }
 
+  componentWillMount() {
+    LabelAPI.getList()
+      .then(res => {
+        this.setState({
+          labels: Immutable.fromJS(res)
+        })
+      })
+  }
+
   render() {
     return (
       <div className={styles.wrapper}>
-        <LabelList className={styles.labelList} />
+        <LabelList
+          className={styles.labelList}
+          labels={this.state.labels} />
         <MemoList className={styles.memoList} />
         <MemoEditor className={styles.memoEditor} />
       </div>

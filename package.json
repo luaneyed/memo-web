@@ -20,9 +20,11 @@
   "dependencies": {
     "classnames": "^2.2.5",
     "immutable": "^3.8.1",
+    "prop-types": "^15.5.9",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
-    "webpack": "^2.5.1"
+    "webpack": "^2.5.1",
+    "zoyi-simple-fetch": "^0.1.14"
   },
   "devDependencies": {
     "autoprefixer": "^7.0.1",
