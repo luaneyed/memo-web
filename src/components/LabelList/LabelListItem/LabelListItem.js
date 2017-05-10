@@ -9,7 +9,7 @@ import styles from './LabelListItem.scss'
 
 const LabelListItem = ({ className, label }) => (
   <div className={classNames(styles.wrapper, className)}>
-    {label.get('name')}
+    {`${label.get('name')} (${label.get('memoCount')})`}
   </div>
 )
 

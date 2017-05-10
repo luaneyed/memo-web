@@ -1,6 +1,13 @@
 /* Internal dependencies */
 import client from './lib'
 
+/*
+ const labelSchema = new Mongoose.Schema({
+   name: String,
+   createdAt: Number,
+ })
+ */
+
 export function getList() {
   return client.get('labels')
 }

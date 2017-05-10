@@ -1,5 +1,5 @@
 import * as LabelAPI from './LabelAPI'
-import * as MemoAPI from './LabelAPI'
+import * as MemoAPI from './MemoAPI'
 
 export {
   LabelAPI,

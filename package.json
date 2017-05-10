@@ -23,6 +23,7 @@
     "prop-types": "^15.5.9",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
+    "react-overlays": "^0.7.0",
     "webpack": "^2.5.1",
     "zoyi-simple-fetch": "^0.1.14"
   },

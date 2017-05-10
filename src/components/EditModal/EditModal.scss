@@ -1,0 +1,49 @@
+.wrapper {
+  width: 360px;
+  background-color: white;
+  border-radius: 6px;
+  font-weight: bold;
+
+  .editArea {
+    display: flex;
+    padding: 25px 15px;
+    color: black;
+    font-size: 20px;
+
+    .title {
+      margin-right: 20px;
+      align-self: center;
+    }
+    .input {
+      flex: 1;
+      font-size: 20px;
+    }
+  }
+
+  .divider {
+    height: 1px;
+    background-color: #ddd;
+  }
+
+  .buttons {
+    display: inline;
+    width: 100%;
+
+    .ok, .cancel {
+      width: 70px;
+      margin: 10px;
+      border: solid 2px black;
+      border-radius: 10px;
+      padding: 7px 10px;
+      font-size: 13px;
+      text-align: center;
+      cursor: pointer;
+    }
+    .ok {
+      float: right;
+    }
+    .cancel {
+      float: left;
+    }
+  }
+}

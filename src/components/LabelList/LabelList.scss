@@ -1,0 +1,20 @@
+$item-height: 35px;
+
+.item {
+  display: flex;
+  height: $item-height;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.createLabel {
+  border: solid 2px black;
+  margin-bottom: 15px;
+}
+
+.labels {
+  //height: calc(100% - #{$item-height});
+  bottom: 0;
+  border: solid 2px black;
+}
