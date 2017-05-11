@@ -49,14 +49,14 @@ class App extends RoutingComponent {
           }
         })
       })
-    const getMomes = MemoAPI.getList()
+    const getMemos = MemoAPI.getList()
       .then(res => {
         this.setState({
           memos: listToMap(res)
         })
       })
 
-    Promise.all([getLabels, getMomes])
+    Promise.all([getLabels, getMemos])
       .then(() => {
         this.setState({
           isLoading: false

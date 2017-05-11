@@ -55,4 +55,5 @@ export default (env = defaultEnv) => ({
       },
     ]
   },
+  devtool: env.dev ? 'cheap-module-eval-source-map' : 'cheap-module-source-map',
 })
