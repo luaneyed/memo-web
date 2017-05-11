@@ -1,0 +1,28 @@
+.wrapper {
+  padding: 10px;
+
+  .title {
+    margin-bottom: 5px;
+    font-size: 15px;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .details {
+    display: flex;
+    align-items: center;
+    font-size: 10px;
+
+    .updatedAt {
+      color: gray;
+      white-space: nowrap;
+      margin-right: 5px;
+    }
+    .content {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+}

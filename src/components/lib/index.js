@@ -11,22 +11,36 @@ class RoutingComponent extends React.Component {
     return qs.parse(props.location.search).memoId
   }
 
-  setCurrentLabelId(labelId) {
-    const memoId = this.getCurrentMemoId()
-    this.props.history.push(`/${qs.stringify(memoId ? { labelId, memoId } : { labelId }, true)}`)
+  setCurrentLabelId(labelId, props = this.props) {
+    const memoId = this.getCurrentMemoId(props)
+    if (labelId !== this.getCurrentLabelId(props)) {
+      props.history.push(`/${qs.stringify(memoId ? { labelId, memoId } : { labelId }, true)}`)
+    }
   }
 
   setCurrentLabel(label) {
     this.setCurrentLabelId(label.get('_id') || label._id)
   }
 
-  setCurrentMemoId(memoId) {
-    const labelId = this.getCurrentLabelId()
-    this.props.history.push(`/${qs.stringify(labelId ? { labelId, memoId } : { memoId }, true)}`)
+  setCurrentMemoId(memoId, props = this.props) {
+    const labelId = this.getCurrentLabelId(props)
+    if (memoId !== this.getCurrentMemoId(props)) {
+      props.history.push(`/${qs.stringify(labelId ? { labelId, memoId } : { memoId }, true)}`)
+    }
   }
 
   setCurrentMemo(memo) {
     this.setCurrentMemoId(memo.get('_id') || memo._id)
+  }
+
+  removeCurrentLabelId(props = this.props) {
+    const memoId = this.getCurrentMemoId(props)
+    props.history.replace(`/${qs.stringify(memoId ? { memoId } : {}, true)}`)
+  }
+
+  removeCurrentMemoId(props = this.props) {
+    const labelId = this.getCurrentLabelId(props)
+    props.history.replace(`/${qs.stringify(labelId ? { labelId } : {}, true)}`)
   }
 }
 

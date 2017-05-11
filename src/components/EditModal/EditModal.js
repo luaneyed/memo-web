@@ -54,7 +54,7 @@ class EditModal extends React.Component {
               type="text"
               value={this.state.value}
               onChange={this.handleChange}
-              onKeyPress={e => { if (e.charCode === 13) { this.doSubmit() } }}/>
+              onKeyPress={e => { if (e.charCode === 13) { this.doSubmit() } }} />
           </div>
           <div className={styles.divider} />
           <div className={styles.buttons}>

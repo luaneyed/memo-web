@@ -26,6 +26,9 @@ class App extends RoutingComponent {
     this.createLabel = this.createLabel.bind(this)
     this.updateLabel = this.updateLabel.bind(this)
     this.deleteLabel = this.deleteLabel.bind(this)
+    this.createMemo = this.createMemo.bind(this)
+    this.updateMemo = this.updateMemo.bind(this)
+    this.deleteMemo = this.deleteMemo.bind(this)
     this.state = {
       //  pure data
       labels: Immutable.Map(),
@@ -64,6 +67,12 @@ class App extends RoutingComponent {
       })
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (!this.getCurrentLabelId(nextProps)) {
+      this.setCurrentLabelId('all', nextProps)
+    }
+  }
+
   componentWillUpdate(nextProps, nextState) {
     if (!nextState.labels.equals(this.state.labels) || !nextState.memos.equals(this.state.memos)) {
       let countedLabels = nextState.labels.map(label => label.set('memoCount', 0))
@@ -88,13 +97,11 @@ class App extends RoutingComponent {
   }
 
   getCurrentLabel() {
-    const currentLabelId = this.getCurrentLabelId()
-    return this.state.countedLabels.find(label => label.get('_id') === currentLabelId, undefined, Immutable.Map())
+    return this.state.countedLabels.get(this.getCurrentLabelId()) || Immutable.Map()
   }
 
   getCurrentMemo() {
-    const currentMemoId = this.getCurrentMemoId()
-    this.state.memos.find(memo => memo.get('_id') === currentMemoId, undefined, Immutable.Map())
+    return this.state.memos.get(this.getCurrentMemoId()) || Immutable.Map()
   }
 
   createLabel(name) {
@@ -123,9 +130,40 @@ class App extends RoutingComponent {
           this.setState(state => ({
             labels: state.labels.remove(labelId)
           }))
-          this.setCurrentLabelId('all')
+          this.removeCurrentLabelId()
         })
     }
+  }
+
+  createMemo() {
+    MemoAPI.create({
+      title: '새 메모',
+      content: '내용을 입력해주세요.',
+    })
+      .then(memo => {
+        this.setState(state => ({
+          memos: state.memos.set(memo._id, Immutable.Map(memo))
+        }))
+      })
+  }
+
+  updateMemo(memo) {
+    MemoAPI.update(memo.get('_id'), memo.toObject())
+      .then(updatedMemo => {
+        this.setState(state => ({
+          memos: state.memos.set(updatedMemo._id, Immutable.Map(updatedMemo))
+        }))
+      })
+  }
+
+  deleteMemo(memoId) {
+    MemoAPI.remove(memoId)
+      .then(() => {
+        this.setState(state => ({
+          memos: state.memos.remove(memoId)
+        }))
+        this.removeCurrentMemoId()
+      })
   }
 
   render() {
@@ -165,13 +203,17 @@ class App extends RoutingComponent {
               currentLabel={this.getCurrentLabel()}
               memos={memoList}
               updateLabel={this.updateLabel}
-              deleteLabel={this.deleteLabel} />) :
+              deleteLabel={this.deleteLabel}
+              createMemo={this.createMemo} />) :
             null
         }
         <MemoView
           className={styles.memoEditor}
           tab={this.state.tab}
-          changeTab={this.changeTab} />
+          changeTab={this.changeTab}
+          memo={this.getCurrentMemo()}
+          updateMemo={this.updateMemo}
+          deleteMemo={this.deleteMemo} />
       </div>
     )
   }

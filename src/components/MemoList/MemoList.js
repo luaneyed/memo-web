@@ -50,7 +50,8 @@ class MemoList extends RoutingComponent {
       <div className={classNames(styles.wrapper, className)}>
         <div className={styles.header}>
           <div
-            className={classNames(styles.createMemo, styles.item)}>
+            className={classNames(styles.createMemo, styles.item)}
+            onClick={this.props.createMemo}>
             메모 추가
           </div>
           <div
@@ -83,11 +84,9 @@ class MemoList extends RoutingComponent {
               memos.map(memo =>
                 <MemoPreview
                   key={memo.get('_id')}
-                  className={classNames(styles.memoPreview, styles.item)}
+                  className={styles.memoPreview}
                   memo={memo}
-                  onClick={() => {
-                    this.setCurrentMemo(memo)
-                  }}/>
+                  onClick={() => { this.setCurrentMemo(memo) }} />
               ) :
               <div className={styles.noMemo}>메모가 없습니다</div>
           }
@@ -111,6 +110,7 @@ MemoList.propTypes = {
   memos: PropTypes.instanceOf(Immutable.List),
   updateLabel: PropTypes.func,
   deleteLabel: PropTypes.func,
+  createMemo: PropTypes.func,
 }
 
 MemoList.defaultProps = {
@@ -119,6 +119,7 @@ MemoList.defaultProps = {
   memos: Immutable.List(),
   updateLabel: () => {},
   deleteLabel: () => {},
+  createMemo: () => {},
 }
 
 export default MemoList

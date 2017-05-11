@@ -6,10 +6,15 @@ import Immutable from 'immutable'
 
 /* Internal Dependencies */
 import styles from './MemoPreview.scss'
+import { displayTime } from '../../../utils/momentUtils'
 
 const MemoPreview = ({ className, memo, onClick }) => (
   <div className={classNames(styles.wrapper, className)} onClick={onClick}>
-    {`${memo.get('title')} (${memo.get('content')})`}
+    <div className={styles.title}>{memo.get('title')}</div>
+    <div className={styles.details}>
+      <div className={styles.updatedAt}>{displayTime(memo.get('updatedAt'))}</div>
+      <div className={styles.content}>{memo.get('content')}</div>
+    </div>
   </div>
 )
 
