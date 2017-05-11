@@ -22,16 +22,20 @@ const listToMap = list => Immutable.Map().withMutations(
 class App extends RoutingComponent {
   constructor() {
     super()
+    this.changeTab = this.changeTab.bind(this)
     this.createLabel = this.createLabel.bind(this)
     this.updateLabel = this.updateLabel.bind(this)
     this.deleteLabel = this.deleteLabel.bind(this)
     this.state = {
-      //  pure states
+      //  pure data
       labels: Immutable.Map(),
       memos: Immutable.Map(),
 
-      //  combined states
+      //  combined data
       countedLabels: Immutable.Map(),
+
+      //  UI
+      tab: 3,
     }
   }
 
@@ -66,6 +70,13 @@ class App extends RoutingComponent {
       // })]
       this.setState({ countedLabels })
     }
+  }
+
+  changeTab() {
+    this.setState(state => {
+      const { tab } = state
+      return { tab: ((tab > 1) ? (tab - 1) : 3) }
+    })
   }
 
   getCurrentLabel() {
@@ -122,17 +133,28 @@ class App extends RoutingComponent {
     const memoList = this.state.memos.toList()
     return (
       <div className={styles.wrapper}>
-        <LabelList
-          className={styles.labelList}
-          labels={labelList}
-          createLabel={this.createLabel} />
-        <MemoList
-          className={styles.memoList}
-          currentLabel={this.getCurrentLabel()}
-          memos={memoList}
-          updateLabel={this.updateLabel}
-          deleteLabel={this.deleteLabel} />
-        <MemoView className={styles.memoEditor} />
+        {
+          this.state.tab === 3 ?
+            (<LabelList
+              className={styles.labelList}
+              labels={labelList}
+              createLabel={this.createLabel} />) :
+            null
+        }
+        {
+          this.state.tab >= 2 ?
+            (<MemoList
+              className={styles.memoList}
+              currentLabel={this.getCurrentLabel()}
+              memos={memoList}
+              updateLabel={this.updateLabel}
+              deleteLabel={this.deleteLabel} />) :
+            null
+        }
+        <MemoView
+          className={styles.memoEditor}
+          tab={this.state.tab}
+          changeTab={this.changeTab} />
       </div>
     )
   }

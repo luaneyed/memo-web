@@ -48,8 +48,13 @@ class MemoView extends React.Component {
       <div className={classNames(styles.wrapper, className)}>
         <div className={styles.header}>
           <div
-            className={classNames(styles.adjustTab, styles.item)}>
-            탭 접기
+            className={classNames(styles.adjustTab, styles.item)}
+            onClick={this.props.changeTab}>
+            {
+              this.props.tab > 1 ?
+                '탭 접기' :
+                '탭 펼치기'
+            }
           </div>
           <div
             className={classNames(styles.deleteMemo, styles.item)}>
@@ -78,18 +83,14 @@ class MemoView extends React.Component {
 
 MemoView.propTypes = {
   className: PropTypes.string,
-  currentLabel: PropTypes.instanceOf(Immutable.Map),
-  memos: PropTypes.instanceOf(Immutable.List),
-  updateLabel: PropTypes.func,
-  deleteLabel: PropTypes.func,
+  tab: PropTypes.number,
+  changeTab: PropTypes.func,
 }
 
 MemoView.defaultProps = {
   className: '',
-  currentLabel: Immutable.Map(),
-  memos: Immutable.List(),
-  updateLabel: () => {},
-  deleteLabel: () => {},
+  tab: 3,
+  changeTab: () => {},
 }
 
 export default MemoView
