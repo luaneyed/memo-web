@@ -79,7 +79,11 @@ class MemoList extends RoutingComponent {
             }
           </div>
           {memos.map(memo =>
-            <MemoPreview key={memo.get('_id')} className={classNames(styles.memoPreview, styles.item)} memo={memo} onClick={() => { this.setCurrentMemo(memo) }} />
+            <MemoPreview
+              key={memo.get('_id')}
+              className={classNames(styles.memoPreview, styles.item)}
+              memo={memo}
+              onClick={() => { this.setCurrentMemo(memo) }} />
           )}
         </div>
         <EditModal

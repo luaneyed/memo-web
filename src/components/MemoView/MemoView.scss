@@ -1,0 +1,42 @@
+$header-height: 35px;
+
+.item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.wrapper {
+  position: relative;
+}
+
+.header {
+  height: $header-height;
+  margin-bottom: 15px;
+
+  .adjustTab, .changeLabel, .deleteMemo {
+    height: $header-height;
+    border: solid 2px black;
+    cursor: pointer;
+  }
+  .adjustTab {
+    float: left;
+    width: 80px;
+  }
+  .deleteMemo, .changeLabel {
+    float: right;
+    width: 90px;
+  }
+  .changeLabel {
+    margin-right: 10px;
+  }
+}
+
+.memoEditor {
+  position: absolute;
+  top: 50px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  border: solid 2px black;
+}

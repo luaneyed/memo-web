@@ -7,7 +7,7 @@ import Immutable from 'immutable'
 import styles from './App.scss'
 import RoutingComponent from '../lib'
 import LabelList from '../LabelList'
-import MemoEditor from '../MemoEditor'
+import MemoView from '../MemoView'
 import MemoList from '../MemoList'
 import { LabelAPI, MemoAPI } from '../../api'
 
@@ -132,7 +132,7 @@ class App extends RoutingComponent {
           memos={memoList}
           updateLabel={this.updateLabel}
           deleteLabel={this.deleteLabel} />
-        <MemoEditor className={styles.memoEditor} />
+        <MemoView className={styles.memoEditor} />
       </div>
     )
   }
