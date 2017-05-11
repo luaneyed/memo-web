@@ -35,12 +35,13 @@ class App extends RoutingComponent {
       countedLabels: Immutable.Map(),
 
       //  UI
+      isLoading: true,
       tab: 3,
     }
   }
 
   componentWillMount() {
-    LabelAPI.getList()
+    const getLabels = LabelAPI.getList()
       .then(res => {
         this.setState({ labels: listToMap(res) }, () => {
           if (!this.getCurrentLabelId()) {
@@ -48,10 +49,17 @@ class App extends RoutingComponent {
           }
         })
       })
-    MemoAPI.getList()
+    const getMomes = MemoAPI.getList()
       .then(res => {
         this.setState({
           memos: listToMap(res)
+        })
+      })
+
+    Promise.all([getLabels, getMomes])
+      .then(() => {
+        this.setState({
+          isLoading: false
         })
       })
   }
@@ -121,6 +129,15 @@ class App extends RoutingComponent {
   }
 
   render() {
+    if (this.state.isLoading) {
+      return (
+        <div className={styles.wrapper}>
+          <div className={styles.loader}>
+            로딩중입니다...
+          </div>
+        </div>
+      )
+    }
     const labelList = this.state.countedLabels.toList().sort(
       (label1, label2) => {
         if (label1.get('_id') === 'all')

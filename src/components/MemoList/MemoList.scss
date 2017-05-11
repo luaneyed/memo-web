@@ -1,4 +1,6 @@
 $header-height: 35px;
+$header-margin: 15px;
+$label-info-height: 35px;
 
 .item {
   display: flex;
@@ -8,7 +10,7 @@ $header-height: 35px;
 
 .header {
   height: $header-height;
-  margin-bottom: 15px;
+  margin-bottom: $header-margin;
 
   .createMemo, .startSelection {
     width: 90px;
@@ -25,11 +27,14 @@ $header-height: 35px;
 }
 
 .list {
+  position: relative;
+  height: calc(100% - #{$header-height} - #{$header-margin});
   border: solid 2px black;
+  overflow: auto;
 
   .labelInfo {
     display: flex;
-    height: 35px;
+    height: $label-info-height;
     align-items: center;
 
     .name, .functions {
@@ -59,5 +64,16 @@ $header-height: 35px;
   .memoPreview {
     height: 80px;
     cursor: pointer;
+  }
+  .noMemo {
+    display: flex;
+    position: absolute;
+    top: $label-info-height;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 0 10px;
+    justify-content: center;
+    align-items: center;
   }
 }

@@ -1,6 +1,9 @@
+$header-height: 35px;
+$header-margin: 15px;
+
 .item {
   display: flex;
-  height: 35px;
+  height: $header-height;
   padding: 0 10px;
   justify-content: center;
   align-items: center;
@@ -9,9 +12,11 @@
 
 .createLabel {
   border: solid 2px black;
-  margin-bottom: 15px;
+  margin-bottom: $header-margin;
 }
 
 .labels {
+  height: calc(100% - #{$header-height} - #{$header-margin});
   border: solid 2px black;
+  overflow: auto;
 }
