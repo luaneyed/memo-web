@@ -65,9 +65,15 @@ class MemoView extends React.Component {
             라벨 변경
           </div>
         </div>
-        <MemoEditor className={styles.memoEditor}>
-
-        </MemoEditor>
+        <MemoEditor
+          className={styles.memoEditor}
+          memo={Immutable.Map({
+            title: '임시 제목',
+            content: '내용이다 ㅋ \nㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ\n\n\n\n\n\n여러줄 띄어봤당',
+            labelIds: Immutable.List(),
+            updatedAt: 1047392873,
+          })}
+        />
         {/*<EditModal*/}
           {/*show={this.state.showEditLabelModal}*/}
           {/*value={this.props.currentLabel.get('name')}*/}
