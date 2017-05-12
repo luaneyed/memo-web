@@ -33,6 +33,20 @@ class RoutingComponent extends React.Component {
     this.setCurrentMemoId(memo.get('_id') || memo._id)
   }
 
+  replaceCurrentLabelId(labelId, props = this.props) {
+    const memoId = this.getCurrentMemoId(props)
+    if (labelId !== this.getCurrentLabelId(props)) {
+      props.history.replace(`/${qs.stringify(memoId ? { labelId, memoId } : { labelId }, true)}`)
+    }
+  }
+
+  replaceCurrentMemoId(memoId, props = this.props) {
+    const labelId = this.getCurrentLabelId(props)
+    if (memoId !== this.getCurrentMemoId(props)) {
+      props.history.replace(`/${qs.stringify(labelId ? { labelId, memoId } : { memoId }, true)}`)
+    }
+  }
+
   removeCurrentLabelId(props = this.props) {
     const memoId = this.getCurrentMemoId(props)
     props.history.replace(`/${qs.stringify(memoId ? { memoId } : {}, true)}`)

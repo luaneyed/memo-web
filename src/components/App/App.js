@@ -46,11 +46,7 @@ class App extends RoutingComponent {
   componentWillMount() {
     const getLabels = LabelAPI.getList()
       .then(res => {
-        this.setState({ labels: listToMap(res) }, () => {
-          if (!this.getCurrentLabelId()) {
-            this.setCurrentLabelId('all')
-          }
-        })
+        this.setState({ labels: listToMap(res) }, this.validateSearchQuery)
       })
     const getMemos = MemoAPI.getList()
       .then(res => {
@@ -68,9 +64,7 @@ class App extends RoutingComponent {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!this.getCurrentLabelId(nextProps)) {
-      this.setCurrentLabelId('all', nextProps)
-    }
+    this.validateSearchQuery(nextProps)
   }
 
   componentWillUpdate(nextProps, nextState) {
@@ -86,6 +80,22 @@ class App extends RoutingComponent {
       //   console.log('memo', memo)
       // })]
       this.setState({ countedLabels })
+    }
+  }
+
+  validateSearchQuery(props = this.props, state = this.state) {
+    const currentLabelId = this.getCurrentLabelId(props)
+    if (!currentLabelId || !state.labels.get(currentLabelId)) {
+      this.replaceCurrentLabelId('all', props)
+    }
+
+    const currentMemoId = this.getCurrentMemoId(props)
+    if (currentMemoId) {
+      if (!state.memos.get(currentMemoId)) {
+        this.removeCurrentMemoId(props)
+      }
+    } else if (currentMemoId === '') {
+      this.removeCurrentMemoId(props)
     }
   }
 
