@@ -51,7 +51,7 @@ class SelectLabelModal extends React.Component {
 
 
   render() {
-    const { show, labels, selectedLabelIds, cancel, ok, onSubmit, onCancel, ...props } = this.props
+    const { show, labelList, selectedLabelIds, cancel, ok, onSubmit, onCancel, ...props } = this.props
     return (
       <Modal show={show} onHide={onCancel}>
         <div className={styles.wrapper} {...props}>
@@ -60,7 +60,7 @@ class SelectLabelModal extends React.Component {
               라벨 선택
             </div>
             <div className={styles.selector}>
-              {labels.map(this.renderLabel)}
+              {labelList.map(this.renderLabel)}
             </div>
           </div>
           <div className={styles.divider} />
@@ -75,7 +75,7 @@ class SelectLabelModal extends React.Component {
 }
 
 SelectLabelModal.propTypes = {
-  labels: PropTypes.instanceOf(Immutable.List),
+  labelList: PropTypes.instanceOf(Immutable.List),
   selectedLabelIds: PropTypes.instanceOf(Immutable.Set),
   show: PropTypes.bool,
   ok: PropTypes.string,
@@ -85,7 +85,7 @@ SelectLabelModal.propTypes = {
 }
 
 SelectLabelModal.defaultProps = {
-  labels: Immutable.List(),
+  labelList: Immutable.List(),
   selectedLabelIds: Immutable.Set(),
   show: false,
   ok: '',

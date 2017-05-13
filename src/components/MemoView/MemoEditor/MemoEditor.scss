@@ -1,20 +1,29 @@
 .wrapper {
-  padding: 10px;
+  padding: 5px;
 
-  .title {
-    margin-bottom: 10px;
-  }
   .titleFont {
     font-size: 16px;
     font-weight: bold;
   }
-  .contentFont {
-    font-size: 14px;
+  .labels {
+    margin: 0 12px 10px;
+    font-size: 11px;
+
+    .label {
+      display: inline-block;
+      margin: 0 5px 5px 0;
+      border: solid 1px black;
+      border-radius: 10px;
+      padding: 3px 5px;
+    }
   }
   .updatedAt {
     font-size: 11px;
     text-align: right;
     color: gray;
-    margin: 0 20px 10px 0;
+    margin: 0 15px;
+  }
+  .contentFont {
+    font-size: 14px;
   }
 }

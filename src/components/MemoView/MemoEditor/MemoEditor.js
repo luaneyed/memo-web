@@ -19,6 +19,11 @@ class MemoEditor extends React.Component {
           fontClassName={styles.titleFont}
           value={memo.get('title')}
           onChange={newTitle => { this.props.updateMemo(this.props.memo.set('title', newTitle)) }} />
+        <div className={styles.labels}>
+          {this.props.memo.get('labelIds').map(labelId =>
+            <span className={styles.label}>{this.props.labels.get(labelId).get('name')}</span>
+          )}
+        </div>
         <div className={styles.updatedAt}>{memo.isEmpty() ? '' : displayTime(memo.get('updatedAt'))}</div>
         <Transformer
           fontClassName={styles.contentFont}
@@ -32,12 +37,14 @@ class MemoEditor extends React.Component {
 MemoEditor.propTypes = {
   className: PropTypes.string,
   memo: PropTypes.instanceOf(Immutable.Map),
+  labels: PropTypes.instanceOf(Immutable.Map),
   updateMemo: PropTypes.func,
 }
 
 MemoEditor.defaultProps = {
   className: '',
   memo: Immutable.Map(),
+  labels: Immutable.Map(),
   updateMemo: () => {},
 }
 

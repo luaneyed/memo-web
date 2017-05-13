@@ -288,7 +288,8 @@ class App extends RoutingComponent {
           tab={this.state.tab}
           changeTab={this.changeTab}
           memo={this.getCurrentMemo()}
-          labels={labelList}
+          labels={this.state.labels}
+          labelList={labelList}
           updateMemo={this.updateMemo}
           deleteMemo={this.deleteMemo} />
       </div>

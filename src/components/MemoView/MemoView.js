@@ -79,10 +79,11 @@ class MemoView extends React.Component {
         <MemoEditor
           className={styles.memoEditor}
           memo={this.props.memo}
+          labels={this.props.labels}
           updateMemo={this.props.updateMemo} />
         <SelectLabelModal
           show={this.state.showSelectLabelModal}
-          labels={this.props.labels}
+          labelList={this.props.labelList}
           selectedLabelIds={this.props.memo.get('labelIds')}
           onCancel={this.onHideSelectLabelModal}
           onSubmit={this.onSubmitSelectLabelModal}
@@ -99,7 +100,8 @@ MemoView.propTypes = {
   tab: PropTypes.number,
   changeTab: PropTypes.func,
   memo: PropTypes.instanceOf(Immutable.Map),
-  labels: PropTypes.instanceOf(Immutable.List),
+  labels: PropTypes.instanceOf(Immutable.Map),
+  labelList: PropTypes.instanceOf(Immutable.List),
   updateMemo: PropTypes.func,
   deleteMemo: PropTypes.func,
 }
@@ -109,7 +111,8 @@ MemoView.defaultProps = {
   tab: 3,
   changeTab: () => {},
   memo: Immutable.Map(),
-  labels: Immutable.List(),
+  labels: Immutable.Map(),
+  labelList: Immutable.List(),
   updateMemo: () => {},
   deleteMemo: () => {},
 }
