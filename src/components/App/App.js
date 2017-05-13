@@ -88,6 +88,10 @@ class App extends RoutingComponent {
   }
 
   componentWillUpdate(nextProps, nextState) {
+    if (this.state.isLoading && !nextState.isLoading) {
+      this.validateSearchQuery(nextProps, nextState)
+    }
+
     if (!nextState.labels.equals(this.state.labels) || !nextState.memos.equals(this.state.memos)) {
       this.setState({
         countedLabels : nextState.labels
@@ -109,6 +113,10 @@ class App extends RoutingComponent {
     }
   }
 
+  componentDidUpdate() {
+    this.autoSelectMemo()
+  }
+
   validateSearchQuery(props = this.props, state = this.state) {
     const currentLabelId = this.getCurrentLabelId(props)
     if (!currentLabelId || !state.labels.get(currentLabelId)) {
@@ -116,12 +124,23 @@ class App extends RoutingComponent {
     }
 
     const currentMemoId = this.getCurrentMemoId(props)
-    if (currentMemoId) {
+    if (currentMemoId === '') {
+      this.removeCurrentMemoId(props)
+    }
+
+    if (!state.isLoading && currentMemoId) {
       if (!state.memos.get(currentMemoId)) {
         this.removeCurrentMemoId(props)
       }
-    } else if (currentMemoId === '') {
-      this.removeCurrentMemoId(props)
+    }
+  }
+
+  autoSelectMemo(props = this.props, state = this.state) {
+    if (!this.getCurrentMemoId(props)) {
+      const memos = this.getMemoList(state)
+      if (memos.size > 0) {
+        this.replaceCurrentMemoId(memos.first().get('_id'))
+      }
     }
   }
 
@@ -178,9 +197,12 @@ class App extends RoutingComponent {
   }
 
   createMemo() {
+    const currentLabelId = this.getCurrentLabelId()
+    const labelIds = currentLabelId === 'all' ? [] : [currentLabelId]
     MemoAPI.create({
       title: '새 메모',
       content: '내용을 입력해주세요.',
+      labelIds,
     })
       .then(memo => {
         this.setState(state => ({
@@ -208,6 +230,26 @@ class App extends RoutingComponent {
       })
   }
 
+  getLabelList(state = this.state) {
+    return state.countedLabels.toList().sort(
+      (label1, label2) => {
+        if (label1.get('_id') === 'all')
+          return -1
+        if (label2.get('_id') === 'all')
+          return 1
+        return  (label1.get('createdAt') < label2.get('createdAt') ? 1 : -1)
+      }
+    )
+  }
+
+  getMemoList(state = this.state) {
+    const currentLabelId = this.getCurrentLabelId()
+    return state.memos
+      .filter(memo => currentLabelId === 'all' || memo.get('labelIds').has(currentLabelId))
+      .toList()
+      .sort((label1, label2) => (label1.get('updatedAt') < label2.get('updatedAt') ? 1 : -1))
+  }
+
   render() {
     if (this.state.isLoading) {
       return (
@@ -218,16 +260,8 @@ class App extends RoutingComponent {
         </div>
       )
     }
-    const labelList = this.state.countedLabels.toList().sort(
-      (label1, label2) => {
-        if (label1.get('_id') === 'all')
-          return -1
-        if (label2.get('_id') === 'all')
-          return 1
-        return  (label1.get('createdAt') < label2.get('createdAt') ? 1 : -1)
-      }
-    )
-    const memoList = this.state.memos.toList()
+    const labelList = this.getLabelList()
+    const memoList = this.getMemoList()
     return (
       <div className={styles.wrapper}>
         {

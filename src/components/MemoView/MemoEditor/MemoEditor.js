@@ -19,7 +19,7 @@ class MemoEditor extends React.Component {
           fontClassName={styles.titleFont}
           value={memo.get('title')}
           onChange={newTitle => { this.props.updateMemo(this.props.memo.set('title', newTitle)) }} />
-        <div className={styles.updatedAt}>{displayTime(memo.get('updatedAt'))}</div>
+        <div className={styles.updatedAt}>{memo.isEmpty() ? '' : displayTime(memo.get('updatedAt'))}</div>
         <Transformer
           fontClassName={styles.contentFont}
           value={memo.get('content')}
