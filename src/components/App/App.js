@@ -162,9 +162,15 @@ class App extends RoutingComponent {
     const labelId = label.get('_id')
     if (labelId && labelId !== 'all') {
       LabelAPI.remove(labelId)
-        .then(() => {
+        .then(memos => {
+          const newMemos = convertMemosToImmutable(memos)
           this.setState(state => ({
-            labels: state.labels.remove(labelId)
+            labels: state.labels.remove(labelId),
+            memos: state.memos.withMutations(prevMemos => {
+              newMemos.forEach(newMemo => {
+                prevMemos.set(newMemo.get('_id'),newMemo)
+              })
+            }),
           }))
           this.removeCurrentLabelId()
         })
