@@ -201,7 +201,6 @@ class App extends RoutingComponent {
     const labelIds = currentLabelId === 'all' ? [] : [currentLabelId]
     MemoAPI.create({
       title: '새 메모',
-      content: '내용을 입력해주세요.',
       labelIds,
     })
       .then(memo => {
