@@ -205,9 +205,12 @@ class App extends RoutingComponent {
       labelIds,
     })
       .then(memo => {
+        const newMemoId = memo._id
         this.setState(state => ({
-          memos: state.memos.set(memo._id, convertMemoToImmutable(memo))
-        }))
+          memos: state.memos.set(newMemoId, convertMemoToImmutable(memo))
+        }), () => {
+          this.setCurrentMemoId(newMemoId)
+        })
       })
   }
 
