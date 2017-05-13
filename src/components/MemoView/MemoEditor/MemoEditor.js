@@ -22,7 +22,7 @@ class MemoEditor extends React.Component {
           onChange={newTitle => { this.props.updateMemo(this.props.memo.set('title', newTitle)) }} />
         <div className={styles.labels}>
           {this.props.memo.get('labelIds').map(labelId =>
-            <span className={styles.label}>{this.props.labels.get(labelId).get('name')}</span>
+            <span key={labelId} className={styles.label}>{this.props.labels.get(labelId).get('name')}</span>
           )}
         </div>
         <div className={styles.updatedAt}>{memo.isEmpty() ? '' : displayTime(memo.get('updatedAt'))}</div>
