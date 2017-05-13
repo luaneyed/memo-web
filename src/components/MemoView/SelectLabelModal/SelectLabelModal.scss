@@ -1,0 +1,64 @@
+.wrapper {
+  width: 360px;
+  max-height: 80%;
+  background-color: white;
+  border-radius: 6px;
+
+  .body {
+    margin: 25px 15px;
+
+    .title {
+      margin-bottom: 20px;
+      font-size: 20px;
+      font-weight: bold;
+    }
+    .selector {
+      max-height: 300px;
+      color: black;
+      font-size: 20px;
+      overflow: auto;
+
+      .label {
+        margin-bottom: 5px;
+        padding: 5px;
+        font-size: 15px;
+        cursor: pointer;
+
+        &:hover {
+          background-color: gainsboro;
+        }
+        &.selected {
+          background-color: #6f6;
+        }
+      }
+    }
+  }
+
+  .divider {
+    height: 1px;
+    background-color: #ddd;
+  }
+
+  .buttons {
+    display: inline;
+    width: 100%;
+    font-weight: bold;
+
+    .ok, .cancel {
+      width: 70px;
+      margin: 10px;
+      border: solid 2px black;
+      border-radius: 10px;
+      padding: 7px 10px;
+      font-size: 13px;
+      text-align: center;
+      cursor: pointer;
+    }
+    .ok {
+      float: right;
+    }
+    .cancel {
+      float: left;
+    }
+  }
+}

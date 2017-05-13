@@ -18,6 +18,26 @@ const listToMap = list => Immutable.Map().withMutations(
     })
   })
 
+const listToSet = list => Immutable.Set().withMutations(
+  immutable => {
+    list.forEach(elem => {
+      immutable.add(elem)
+    })
+  })
+
+const convertMemosToImmutable = memos =>
+  listToMap(memos).map(memo => memo.set('labelIds', listToSet(memo.get('labelIds'))))
+
+const convertMemoToImmutable = memo => {
+  const labelIds = memo.labelIds
+  if (labelIds) {
+    memo.labelIds = listToSet(labelIds)
+  }
+  return Immutable.Map(memo)
+}
+
+const convertMemoToObject = memo => memo.set('labelIds', memo.get('labelIds').toArray()).toObject()
+
 @withRouter
 class App extends RoutingComponent {
   constructor() {
@@ -51,7 +71,7 @@ class App extends RoutingComponent {
     const getMemos = MemoAPI.getList()
       .then(res => {
         this.setState({
-          memos: listToMap(res)
+          memos: convertMemosToImmutable(res)
         })
       })
 
@@ -69,17 +89,23 @@ class App extends RoutingComponent {
 
   componentWillUpdate(nextProps, nextState) {
     if (!nextState.labels.equals(this.state.labels) || !nextState.memos.equals(this.state.memos)) {
-      let countedLabels = nextState.labels.map(label => label.set('memoCount', 0))
-      countedLabels = countedLabels.set('all', Immutable.Map({
-        _id: 'all',
-        name: '전체메모',
-        memoCount: nextState.memos.size,
-        createdAt: 0,
-      }))
-      // nextState.memos.forEach(memo => {
-      //   console.log('memo', memo)
-      // })]
-      this.setState({ countedLabels })
+      this.setState({
+        countedLabels : nextState.labels
+          .map(label => label.set('memoCount', 0))
+          .set('all', Immutable.Map({
+            _id: 'all',
+            name: '전체메모',
+            memoCount: nextState.memos.size,
+            createdAt: 0,
+          }))
+          .withMutations(labels => {
+            nextState.memos.forEach(memo => {
+              memo.get('labelIds').forEach(labelId => {
+                labels.set(labelId, labels.get(labelId).set('memoCount', labels.getIn([labelId, 'memoCount']) + 1))
+              })
+            })
+          })
+      })
     }
   }
 
@@ -127,7 +153,7 @@ class App extends RoutingComponent {
     LabelAPI.update(label.get('_id'), label.toObject())
       .then(label => {
         this.setState(state => ({
-          labels: state.labels.set(label._id, Immutable.Map(label))
+          labels: state.labels.set(label._id, convertMemoToImmutable(label))
         }))
       })
   }
@@ -152,16 +178,16 @@ class App extends RoutingComponent {
     })
       .then(memo => {
         this.setState(state => ({
-          memos: state.memos.set(memo._id, Immutable.Map(memo))
+          memos: state.memos.set(memo._id, convertMemoToImmutable(memo))
         }))
       })
   }
 
   updateMemo(memo) {
-    MemoAPI.update(memo.get('_id'), memo.toObject())
+    MemoAPI.update(memo.get('_id'), convertMemoToObject(memo))
       .then(updatedMemo => {
         this.setState(state => ({
-          memos: state.memos.set(updatedMemo._id, Immutable.Map(updatedMemo))
+          memos: state.memos.set(updatedMemo._id, convertMemoToImmutable(updatedMemo))
         }))
       })
   }
@@ -222,6 +248,7 @@ class App extends RoutingComponent {
           tab={this.state.tab}
           changeTab={this.changeTab}
           memo={this.getCurrentMemo()}
+          labels={labelList}
           updateMemo={this.updateMemo}
           deleteMemo={this.deleteMemo} />
       </div>

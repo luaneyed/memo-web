@@ -2,8 +2,16 @@ $header-height: 35px;
 
 .item {
   display: flex;
+  height: $header-height;
+  border: solid 2px black;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
+
+  &.disabled {
+    border-color: gainsboro;
+    color: gainsboro;
+  }
 }
 
 .wrapper {
@@ -14,11 +22,6 @@ $header-height: 35px;
   height: $header-height;
   margin-bottom: 15px;
 
-  .adjustTab, .changeLabel, .deleteMemo {
-    height: $header-height;
-    border: solid 2px black;
-    cursor: pointer;
-  }
   .adjustTab {
     float: left;
     width: 80px;
