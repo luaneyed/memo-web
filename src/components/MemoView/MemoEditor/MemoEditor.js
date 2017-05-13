@@ -16,11 +16,12 @@ class MemoEditor extends React.Component {
       <div className={classNames(styles.wrapper, className)}>
         <Transformer
           className={styles.title}
+          fontClassName={styles.titleFont}
           value={memo.get('title')}
           onChange={newTitle => { this.props.updateMemo(this.props.memo.set('title', newTitle)) }} />
         <div className={styles.updatedAt}>{displayTime(memo.get('updatedAt'))}</div>
         <Transformer
-          className={styles.content}
+          fontClassName={styles.contentFont}
           value={memo.get('content')}
           onChange={newContent => { this.props.updateMemo(this.props.memo.set('content', newContent)) }} />
       </div>

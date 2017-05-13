@@ -1,0 +1,17 @@
+.wrapper {
+  outline: none;
+
+  .textArea {
+    width: 100%;
+    resize: none;
+    border: solid 2px gainsboro;
+    padding: 10px;
+    word-break: break-all;
+    outline: none;
+
+    &.disabled {
+      border-color: transparent;
+      color: black;
+    }
+  }
+}
