@@ -18,6 +18,7 @@ class MemoEditor extends React.Component {
           className={styles.title}
           fontClassName={styles.titleFont}
           value={memo.get('title')}
+          placeholder="제목을 입력해주세요"
           onChange={newTitle => { this.props.updateMemo(this.props.memo.set('title', newTitle)) }} />
         <div className={styles.labels}>
           {this.props.memo.get('labelIds').map(labelId =>
@@ -28,6 +29,7 @@ class MemoEditor extends React.Component {
         <Transformer
           fontClassName={styles.contentFont}
           value={memo.get('content')}
+          placeholder="여기를 클릭하여 메모를 작성하세요"
           onChange={newContent => { this.props.updateMemo(this.props.memo.set('content', newContent)) }} />
       </div>
     )

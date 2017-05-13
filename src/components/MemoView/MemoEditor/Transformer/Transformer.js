@@ -80,6 +80,7 @@ class Transformer extends React.Component {
           className={classNames(styles.textArea, this.props.fontClassName, { [styles.disabled]: !this.state.editing })}
           disabled={!this.state.editing}
           value={this.state.value}
+          placeholder={this.props.placeholder}
           onChange={this.onChange}
           onBlur={this.changeToViewMode} />
       </HotKeys>
@@ -91,6 +92,7 @@ Transformer.propTypes = {
   className: PropTypes.string,
   fontClassName: PropTypes.string,
   value: PropTypes.string,
+  placeholder: PropTypes.string,
   onChange: PropTypes.func,
 }
 
@@ -98,6 +100,7 @@ Transformer.defaultProps = {
   className: '',
   fontClassName: '',
   value: '',
+  placeholder: '',
   onChange: () => {},
 }
 
