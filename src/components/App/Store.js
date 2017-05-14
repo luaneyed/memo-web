@@ -28,6 +28,7 @@ const convertMemoToImmutable = memo => {
 
 const convertMemoToObject = memo => memo.set('labelIds', memo.get('labelIds').toArray()).toObject()
 
+
 export default ({
 
   //  API Call Handling
@@ -53,6 +54,7 @@ export default ({
           labels: state.labels.set(label._id, Immutable.Map(label))
         }))
       })
+      .catch(this.showError)
   },
   updateLabel: function(label) {
     return LabelAPI.update(label.get('_id'), label.toObject())
@@ -61,6 +63,7 @@ export default ({
           labels: state.labels.set(label._id, convertMemoToImmutable(label))
         }))
       })
+      .catch(this.showError)
   },
   deleteLabel: function(label) {
     const labelId = label.get('_id')
@@ -78,6 +81,7 @@ export default ({
           }))
           this.removeCurrentLabelId()
         })
+        .catch(this.showError)
     }
     return Promise.reject()
   },
@@ -96,6 +100,7 @@ export default ({
           this.setCurrentMemoId(newMemoId)
         })
       })
+      .catch(this.showError)
   },
   updateMemo: function(memo) {
     return MemoAPI.update(memo.get('_id'), convertMemoToObject(memo))
@@ -104,6 +109,7 @@ export default ({
           memos: state.memos.set(updatedMemo._id, convertMemoToImmutable(updatedMemo))
         }))
       })
+      .catch(this.showError)
   },
   deleteMemo: function(memoId) {
     return MemoAPI.remove(memoId)
@@ -113,6 +119,7 @@ export default ({
         }))
         this.removeCurrentMemoId()
       })
+      .catch(this.showError)
   },
 
   //  Getter Utils

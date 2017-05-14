@@ -2,6 +2,7 @@
 import React from 'react'
 import { withRouter } from 'react-router'
 import Immutable from 'immutable'
+import NotificationSystem from 'react-notification-system'
 
 /* Internal Dependencies */
 import styles from './App.scss'
@@ -11,6 +12,40 @@ import LabelList from '../LabelList'
 import MemoView from '../MemoView'
 import MemoList from '../MemoList'
 
+const toastWidth = 540
+const toastStyle = {
+  Containers: {
+    DefaultStyle: {
+      width: toastWidth,
+    },
+    tc: {
+      marginLeft: -(toastWidth / 2),
+    },
+  },
+  NotificationItem: {
+    DefaultStyle: {
+      borderTop: '0',
+      fontWeight: 'bold',
+      textAlign: 'center',
+      borderRadius: '3px',
+    },
+    error: {
+      backgroundColor: '#FFB000', // yellow
+      color: '#11191C', // black
+    },
+  },
+  Dismiss: {
+    DefaultStyle: {
+      position: 'absolute',
+      top: '11px',
+      backgroundColor: 'transparent',
+    },
+    error: {
+      color: '#11191C', // black
+    },
+  },
+}
+
 @withRouter
 class App extends RoutingComponent {
   constructor() {
@@ -19,6 +54,16 @@ class App extends RoutingComponent {
     Object.keys(Store).forEach(method => {
       this[method] = Store[method].bind(this)
     })
+    this.showError = error => {
+      this._refs.notificationSystem.addNotification({
+        level: 'error',
+        message: error.body.errorMessage,
+        position: 'tc',
+        autoDismiss: 3,
+      })
+    }
+
+    this._refs = {}
     this.state = {
       //  pure data
       labels: Immutable.Map(),
@@ -127,6 +172,9 @@ class App extends RoutingComponent {
     const memoList = this.getMemoList()
     return (
       <div className={styles.wrapper}>
+        <NotificationSystem
+          ref={c => { if (c) { this._refs.notificationSystem = c } }}
+          style={toastStyle} />
         {
           this.state.tab === 3 ?
             (<LabelList

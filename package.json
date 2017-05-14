@@ -27,6 +27,7 @@
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
     "react-hotkeys": "^0.10.0",
+    "react-notification-system": "^0.2.14",
     "react-overlays": "^0.7.0",
     "react-router": "^4.1.1",
     "react-textarea-autosize": "^4.3.0",
