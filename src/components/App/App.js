@@ -1,5 +1,6 @@
 /* External Dependencies */
 import React from 'react'
+import classNames from 'classnames'
 import { withRouter } from 'react-router'
 import Immutable from 'immutable'
 import NotificationSystem from 'react-notification-system'
@@ -9,7 +10,7 @@ import styles from './App.scss'
 import Store from './Store'
 import RoutingComponent from '../lib'
 import LabelList from '../LabelList'
-import MemoView from '../MemoView'
+import MemoEditor from '../MemoEditor'
 import MemoList from '../MemoList'
 
 const toastWidth = 540
@@ -194,15 +195,34 @@ class App extends RoutingComponent {
               createMemo={this.createMemo} />) :
             null
         }
-        <MemoView
-          className={styles.memoEditor}
-          tab={this.state.tab}
-          changeTab={this.changeTab}
-          memo={this.getCurrentMemo()}
-          labels={this.state.labels}
-          labelList={labelList}
-          updateMemo={this.updateMemo}
-          deleteMemo={this.deleteMemo} />
+        <div className={styles.mainTab}>
+          <div className={styles.header}>
+            <div
+              className={classNames(styles.adjustTab, styles.item)}
+              onClick={this.changeTab}>
+              {
+                this.state.tab > 1 ?
+                  '탭 접기' :
+                  '탭 펼치기'
+              }
+            </div>
+            <div
+              className={classNames(styles.deleteMemo, styles.item)}>
+              English
+            </div>
+            <div
+              className={classNames(styles.changeLabel, styles.item)}>
+              검색
+            </div>
+          </div>
+          <MemoEditor
+            className={styles.memoEditor}
+            memo={this.getCurrentMemo()}
+            labels={this.state.labels}
+            labelList={labelList}
+            updateMemo={this.updateMemo}
+            deleteMemo={this.deleteMemo} />
+        </div>
       </div>
     )
   }

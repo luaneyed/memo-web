@@ -44,6 +44,7 @@ class LabelList extends RoutingComponent {
 
   render() {
     const { className, labels } = this.props
+    const currentLabelId = this.getCurrentLabelId()
     return (
       <div className={classNames(styles.wrapper, className)}>
         <div
@@ -52,9 +53,14 @@ class LabelList extends RoutingComponent {
           라벨 생성
         </div>
         <div className={styles.labels}>
-          {labels.map(label =>
-            <LabelListItem key={label.get('_id')} className={styles.item} label={label} onClick={() => { this.setCurrentLabel(label) }} />
-          )}
+          {labels.map(label => (
+            <LabelListItem
+              key={label.get('_id')}
+              className={styles.item}
+              label={label}
+              selected={label.get('_id') === currentLabelId}
+              onClick={() => { this.setCurrentLabel(label) }} />
+          ))}
         </div>
         <EditModal
           show={this.state.showCreateLabelModal}

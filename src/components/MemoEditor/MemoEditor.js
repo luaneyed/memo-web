@@ -2,14 +2,18 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
+import { withRouter } from 'react-router'
 import Immutable from 'immutable'
 
 /* Internal Dependencies */
-import styles from './MemoView.scss'
-import MemoEditor from './MemoEditor'
+import styles from './MemoEditor.scss'
+import Transformer from './Transformer'
 import SelectLabelModal from './SelectLabelModal'
+import RoutingComponent from '../lib'
+import { displayTime } from '../../utils/momentUtils'
 
-class MemoView extends React.Component {
+@withRouter
+class MemoEditor extends RoutingComponent {
   constructor() {
     super()
     this.onClickDeleteLabel = this.onClickDeleteLabel.bind(this)
@@ -21,22 +25,14 @@ class MemoView extends React.Component {
     }
   }
 
-  isMemoSelected() {
-    return !this.props.memo.isEmpty()
-  }
-
   onClickDeleteLabel() {
-    if (this.isMemoSelected()) {
-      this.props.deleteMemo(this.props.memo.get('_id'))
-    }
+    this.props.deleteMemo(this.props.memo.get('_id'))
   }
 
   onClickSelectLabel() {
-    if (this.isMemoSelected()) {
-      this.setState({
-        showSelectLabelModal: true,
-      })
-    }
+    this.setState({
+      showSelectLabelModal: true,
+    })
   }
 
   onHideSelectLabelModal() {
@@ -53,34 +49,43 @@ class MemoView extends React.Component {
   }
 
   render() {
+    const { className, memo } = this.props
+    if (memo.isEmpty()) {
+      return null
+    }
     return (
-      <div className={classNames(styles.wrapper, this.props.className)}>
-        <div className={styles.header}>
+      <div className={classNames(styles.wrapper, className)}>
+        <Transformer
+          className={styles.title}
+          fontClassName={styles.titleFont}
+          value={memo.get('title')}
+          placeholder="제목을 입력해주세요"
+          onChange={newTitle => { this.props.updateMemo(this.props.memo.set('title', newTitle)) }} />
+        <div className={styles.buttons}>
           <div
-            className={classNames(styles.adjustTab, styles.item)}
-            onClick={this.props.changeTab}>
-            {
-              this.props.tab > 1 ?
-                '탭 접기' :
-                '탭 펼치기'
-            }
+            className={classNames(styles.selectLabel, styles.item)}
+            onClick={this.onClickSelectLabel}>
+            라벨 선택
           </div>
           <div
-            className={classNames(styles.deleteMemo, styles.item, { [styles.disabled]: !this.isMemoSelected() })}
+            className={classNames(styles.deleteMemo, styles.item)}
             onClick={this.onClickDeleteLabel}>
             메모 삭제
           </div>
-          <div
-            className={classNames(styles.changeLabel, styles.item, { [styles.disabled]: !this.isMemoSelected() })}
-            onClick={this.onClickSelectLabel}>
-            라벨 변경
-          </div>
         </div>
-        <MemoEditor
-          className={styles.memoEditor}
-          memo={this.props.memo}
-          labels={this.props.labels}
-          updateMemo={this.props.updateMemo} />
+        <div className={styles.labels}>
+          {this.props.memo.get('labelIds').map(labelId => (
+            <span key={labelId} className={styles.label} onClick={() => { this.setCurrentLabelId(labelId) }}>
+              {this.props.labels.get(labelId).get('name')}
+            </span>
+          ))}
+        </div>
+        <div className={styles.updatedAt}>{displayTime(memo.get('updatedAt'))}</div>
+        <Transformer
+          fontClassName={styles.contentFont}
+          value={memo.get('content')}
+          placeholder="여기를 클릭하여 메모를 작성하세요"
+          onChange={newContent => { this.props.updateMemo(this.props.memo.set('content', newContent)) }} />
         <SelectLabelModal
           show={this.state.showSelectLabelModal}
           labelList={this.props.labelList}
@@ -95,10 +100,8 @@ class MemoView extends React.Component {
   }
 }
 
-MemoView.propTypes = {
+MemoEditor.propTypes = {
   className: PropTypes.string,
-  tab: PropTypes.number,
-  changeTab: PropTypes.func,
   memo: PropTypes.instanceOf(Immutable.Map),
   labels: PropTypes.instanceOf(Immutable.Map),
   labelList: PropTypes.instanceOf(Immutable.List),
@@ -106,10 +109,8 @@ MemoView.propTypes = {
   deleteMemo: PropTypes.func,
 }
 
-MemoView.defaultProps = {
+MemoEditor.defaultProps = {
   className: '',
-  tab: 3,
-  changeTab: () => {},
   memo: Immutable.Map(),
   labels: Immutable.Map(),
   labelList: Immutable.List(),
@@ -117,4 +118,4 @@ MemoView.defaultProps = {
   deleteMemo: () => {},
 }
 
-export default MemoView
+export default MemoEditor

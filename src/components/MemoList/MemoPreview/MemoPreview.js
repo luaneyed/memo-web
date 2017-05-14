@@ -8,8 +8,8 @@ import Immutable from 'immutable'
 import styles from './MemoPreview.scss'
 import { displayTime } from '../../../utils/momentUtils'
 
-const MemoPreview = ({ className, memo, onClick }) => (
-  <div className={classNames(styles.wrapper, className)} onClick={onClick}>
+const MemoPreview = ({ className, memo, selected, onClick }) => (
+  <div className={classNames(styles.wrapper, className, { [styles.selected]: selected })} onClick={onClick}>
     <div className={styles.title}>{memo.get('title')}</div>
     <div className={styles.details}>
       <div className={styles.updatedAt}>{displayTime(memo.get('updatedAt'))}</div>
@@ -21,11 +21,15 @@ const MemoPreview = ({ className, memo, onClick }) => (
 MemoPreview.propTypes = {
   className: PropTypes.string,
   memo: PropTypes.instanceOf(Immutable.Map),
+  selected: PropTypes.bool,
+  onClick: PropTypes.func,
 }
 
 MemoPreview.defaultProps = {
   className: '',
   memo: Immutable.Map(),
+  selected: false,
+  onClick: () => {},
 }
 
 export default MemoPreview

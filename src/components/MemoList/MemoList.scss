@@ -13,7 +13,7 @@ $label-info-height: 35px;
   margin-bottom: $header-margin;
 
   .createMemo, .startSelection {
-    width: 90px;
+    width: 110px;
     height: $header-height;
     border: solid 2px black;
     cursor: pointer;
@@ -36,12 +36,13 @@ $label-info-height: 35px;
     display: flex;
     height: $label-info-height;
     align-items: center;
+    border-bottom: solid 2px black;
 
     .name, .functions {
       align-items: center;
     }
     .name {
-      width: 95px;
+      width: 135px;
       margin-right: 10px;
       padding-left: 10px;
       overflow: hidden;

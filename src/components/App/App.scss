@@ -1,3 +1,5 @@
+$header-height: 35px;
+
 * {
   box-sizing: border-box;
 }
@@ -9,7 +11,7 @@
   bottom: 0px;
   left: 0px;
   right: 0px;
-  min-width: 700px;
+  min-width: 705px;
   padding: 15px;
 
   & > *:not(:first-child) {
@@ -23,9 +25,47 @@
     width: 150px;
   }
   .memoList {
-    width: 200px;
+    width: 240px;
   }
-  .memoEditor {
+  .mainTab {
+    position: relative;
     flex: 1;
+
+
+    .header {
+      height: $header-height;
+      margin-bottom: 15px;
+
+      .item {
+        display: flex;
+        height: $header-height;
+        border: solid 2px black;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+      }
+
+      .adjustTab {
+        float: left;
+        width: 85px;
+      }
+      .deleteMemo, .changeLabel {
+        float: right;
+        width: 60px;
+      }
+      .changeLabel {
+        margin-right: 20px;
+      }
+    }
+
+    .memoEditor {
+      position: absolute;
+      top: 50px;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      border: solid 2px black;
+      overflow: auto;
+    }
   }
 }

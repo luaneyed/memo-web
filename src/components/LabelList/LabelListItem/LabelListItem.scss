@@ -1,6 +1,14 @@
-.name {
-  margin-right: 5px;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
+.wrapper {
+  &:hover {
+    background-color: whitesmoke;
+  }
+  &.selected {
+    background-color: gainsboro;
+  }
+  .name {
+    margin-right: 5px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
 }

@@ -46,6 +46,7 @@ class MemoList extends RoutingComponent {
 
   render() {
     const { className, memos } = this.props
+    const currentMemoId = this.getCurrentMemoId()
     return (
       <div className={classNames(styles.wrapper, className)}>
         <div className={styles.header}>
@@ -86,6 +87,7 @@ class MemoList extends RoutingComponent {
                   key={memo.get('_id')}
                   className={styles.memoPreview}
                   memo={memo}
+                  selected={memo.get('_id') === currentMemoId}
                   onClick={() => { this.setCurrentMemo(memo) }} />
               ) :
               <div className={styles.noMemo}>메모가 없습니다</div>
