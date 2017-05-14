@@ -12,6 +12,9 @@ import { displayTime } from '../../../utils/momentUtils'
 class MemoEditor extends React.Component {
   render() {
     const { className, memo } = this.props
+    if (memo.isEmpty()) {
+      return null
+    }
     return (
       <div className={classNames(styles.wrapper, className)}>
         <Transformer
@@ -25,7 +28,7 @@ class MemoEditor extends React.Component {
             <span key={labelId} className={styles.label}>{this.props.labels.get(labelId).get('name')}</span>
           )}
         </div>
-        <div className={styles.updatedAt}>{memo.isEmpty() ? '' : displayTime(memo.get('updatedAt'))}</div>
+        <div className={styles.updatedAt}>{displayTime(memo.get('updatedAt'))}</div>
         <Transformer
           fontClassName={styles.contentFont}
           value={memo.get('content')}
