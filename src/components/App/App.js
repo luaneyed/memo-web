@@ -4,6 +4,7 @@ import classNames from 'classnames'
 import { withRouter } from 'react-router'
 import Immutable from 'immutable'
 import NotificationSystem from 'react-notification-system'
+import { LocalStorage } from 'awesome-domstorage'
 
 /* Internal Dependencies */
 import styles from './App.scss'
@@ -12,6 +13,7 @@ import RoutingComponent from '../lib'
 import LabelList from '../LabelList'
 import MemoEditor from '../MemoEditor'
 import MemoList from '../MemoList'
+import { translations } from '../../constants'
 
 const toastWidth = 540
 const toastStyle = {
@@ -52,6 +54,8 @@ class App extends RoutingComponent {
   constructor() {
     super()
     this.changeTab = this.changeTab.bind(this)
+    this.changeLanguage = this.changeLanguage.bind(this)
+    this.translate = this.translate.bind(this)
     Object.keys(Store).forEach(method => {
       this[method] = Store[method].bind(this)
     })
@@ -76,6 +80,7 @@ class App extends RoutingComponent {
       //  UI
       isLoading: true,
       tab: 3,
+      language: LocalStorage.get('LANGUAGE'),
     }
   }
 
@@ -159,12 +164,26 @@ class App extends RoutingComponent {
     })
   }
 
+  changeLanguage() {
+    this.setState(({ language }) => {
+      const newLang = language === 'ko' ? 'en' : 'ko'
+      LocalStorage.set('LANGUAGE', newLang)
+      return {
+        language: newLang
+      }
+    })
+  }
+
+  translate(key) {
+    return translations[this.state.language][key]
+  }
+
   render() {
     if (this.state.isLoading) {
       return (
         <div className={styles.wrapper}>
           <div className={styles.loader}>
-            로딩중입니다...
+            {this.translate('loading')}
           </div>
         </div>
       )
@@ -181,7 +200,8 @@ class App extends RoutingComponent {
             (<LabelList
               className={styles.labelList}
               labels={labelList}
-              createLabel={this.createLabel} />) :
+              createLabel={this.createLabel}
+              translate={this.translate} />) :
             null
         }
         {
@@ -192,7 +212,8 @@ class App extends RoutingComponent {
               memos={memoList}
               updateLabel={this.updateLabel}
               deleteLabel={this.deleteLabel}
-              createMemo={this.createMemo} />) :
+              createMemo={this.createMemo}
+              translate={this.translate} />) :
             null
         }
         <div className={styles.mainTab}>
@@ -202,17 +223,22 @@ class App extends RoutingComponent {
               onClick={this.changeTab}>
               {
                 this.state.tab > 1 ?
-                  '탭 접기' :
-                  '탭 펼치기'
+                  this.translate('fold_tab'):
+                  this.translate('unfold_tab')
               }
             </div>
             <div
-              className={classNames(styles.deleteMemo, styles.item)}>
-              English
+              className={classNames(styles.deleteMemo, styles.item)}
+              onClick={this.changeLanguage}>
+              {
+                this.state.language === 'ko' ?
+                  "English" :
+                  "한국어"
+              }
             </div>
             <div
               className={classNames(styles.changeLabel, styles.item)}>
-              검색
+              {this.translate('search')}
             </div>
           </div>
           <MemoEditor
@@ -221,7 +247,8 @@ class App extends RoutingComponent {
             labels={this.state.labels}
             labelList={labelList}
             updateMemo={this.updateMemo}
-            deleteMemo={this.deleteMemo} />
+            deleteMemo={this.deleteMemo}
+            translate={this.translate} />
         </div>
       </div>
     )

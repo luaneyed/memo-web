@@ -11,7 +11,7 @@ $header-height: 35px;
   bottom: 0px;
   left: 0px;
   right: 0px;
-  min-width: 705px;
+  min-width: 715px;
   padding: 15px;
 
   & > *:not(:first-child) {
@@ -51,7 +51,7 @@ $header-height: 35px;
       }
       .deleteMemo, .changeLabel {
         float: right;
-        width: 60px;
+        width: 65px;
       }
       .changeLabel {
         margin-right: 20px;

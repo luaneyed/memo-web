@@ -53,11 +53,11 @@ class MemoList extends RoutingComponent {
           <div
             className={classNames(styles.createMemo, styles.item)}
             onClick={this.props.createMemo}>
-            메모 추가
+            {this.props.translate('create_memo')}
           </div>
           <div
             className={classNames(styles.startSelection, styles.item)}>
-            다중 선택
+            {this.props.translate('select_memos')}
           </div>
         </div>
         <div className={styles.list}>
@@ -70,12 +70,12 @@ class MemoList extends RoutingComponent {
                 null :
                 (<div className={styles.functions}>
                   <div className={styles.editName} onClick={this.onClickEditLabel}>
-                    이름 변경
+                    {this.props.translate('edit_label_name')}
                   </div>
                   <div
                     className={styles.delete}
                     onClick={() => { this.props.deleteLabel(this.props.currentLabel) }}>
-                    삭제
+                    {this.props.translate('remove')}
                   </div>
                 </div>)
             }
@@ -90,7 +90,7 @@ class MemoList extends RoutingComponent {
                   selected={memo.get('_id') === currentMemoId}
                   onClick={() => { this.setCurrentMemo(memo) }} />
               ) :
-              <div className={styles.noMemo}>메모가 없습니다</div>
+              <div className={styles.noMemo}>{this.props.translate('no_memo')}</div>
           }
         </div>
         <EditModal
@@ -98,9 +98,9 @@ class MemoList extends RoutingComponent {
           value={this.props.currentLabel.get('name')}
           onCancel={this.onHideEditLabelModal}
           onSubmit={this.onSubmitEditLabelModal}
-          title="라벨 이름"
-          ok="변경"
-          cancel="취소" />
+          title={this.props.translate('label_name')}
+          ok={this.props.translate('save')}
+          cancel={this.props.translate('cancel')} />
       </div>
     )
   }
@@ -113,6 +113,7 @@ MemoList.propTypes = {
   updateLabel: PropTypes.func,
   deleteLabel: PropTypes.func,
   createMemo: PropTypes.func,
+  translate: PropTypes.func.isRequired,
 }
 
 MemoList.defaultProps = {

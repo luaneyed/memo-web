@@ -50,7 +50,7 @@ class LabelList extends RoutingComponent {
         <div
           className={classNames(styles.createLabel, styles.item)}
           onClick={this.onClickCreateLabel}>
-          라벨 생성
+          {this.props.translate('create_label')}
         </div>
         <div className={styles.labels}>
           {labels.map(label => (
@@ -66,9 +66,9 @@ class LabelList extends RoutingComponent {
           show={this.state.showCreateLabelModal}
           onCancel={this.onHideCreateLabelModal}
           onSubmit={this.onSubmitCreateLabelModal}
-          title="라벨 이름"
-          ok="추가"
-          cancel="취소" />
+          title={this.props.translate('label_name')}
+          ok={this.props.translate('create')}
+          cancel={this.props.translate('cancel')} />
       </div>
     )
   }
@@ -78,6 +78,7 @@ LabelList.propTypes = {
   className: PropTypes.string,
   labels: PropTypes.instanceOf(Immutable.List),
   createLabel: PropTypes.func,
+  translate: PropTypes.func.isRequired,
 }
 
 LabelList.defaultProps = {

@@ -59,18 +59,18 @@ class MemoEditor extends RoutingComponent {
           className={styles.title}
           fontClassName={styles.titleFont}
           value={memo.get('title')}
-          placeholder="제목을 입력해주세요"
+          placeholder={this.props.translate('enter_title')}
           onChange={newTitle => { this.props.updateMemo(this.props.memo.set('title', newTitle)) }} />
         <div className={styles.buttons}>
           <div
             className={classNames(styles.selectLabel, styles.item)}
             onClick={this.onClickSelectLabel}>
-            라벨 선택
+            {this.props.translate('select_labels')}
           </div>
           <div
             className={classNames(styles.deleteMemo, styles.item)}
             onClick={this.onClickDeleteLabel}>
-            메모 삭제
+            {this.props.translate('delete_memo')}
           </div>
         </div>
         <div className={styles.labels}>
@@ -84,7 +84,7 @@ class MemoEditor extends RoutingComponent {
         <Transformer
           fontClassName={styles.contentFont}
           value={memo.get('content')}
-          placeholder="여기를 클릭하여 메모를 작성하세요"
+          placeholder={this.props.translate('enter_content')}
           onChange={newContent => { this.props.updateMemo(this.props.memo.set('content', newContent)) }} />
         <SelectLabelModal
           show={this.state.showSelectLabelModal}
@@ -92,9 +92,9 @@ class MemoEditor extends RoutingComponent {
           selectedLabelIds={this.props.memo.get('labelIds')}
           onCancel={this.onHideSelectLabelModal}
           onSubmit={this.onSubmitSelectLabelModal}
-          title="라벨 이름"
-          ok="변경"
-          cancel="취소" />
+          title={this.props.translate('label_name')}
+          ok={this.props.translate('save')}
+          cancel={this.props.translate('cancel')} />
       </div>
     )
   }
@@ -107,6 +107,7 @@ MemoEditor.propTypes = {
   labelList: PropTypes.instanceOf(Immutable.List),
   updateMemo: PropTypes.func,
   deleteMemo: PropTypes.func,
+  translate: PropTypes.func.isRequired,
 }
 
 MemoEditor.defaultProps = {
