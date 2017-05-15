@@ -5,7 +5,10 @@
   "main": "index.js",
   "scripts": {
     "build": "webpack -p --env.production",
-    "dev": "webpack-dev-server --content-base ./build/ --env.dev"
+    "dev": "webpack-dev-server --content-base ./build/ --env.dev",
+    "test": "npm run lint",
+    "lint": "npm run eslint",
+    "eslint": "eslint ."
   },
   "repository": {
     "type": "git",
@@ -39,6 +42,7 @@
   "devDependencies": {
     "autoprefixer": "^7.0.1",
     "babel-core": "^6.24.1",
+    "babel-eslint": "^7.2.3",
     "babel-loader": "^7.0.0",
     "babel-plugin-transform-decorators-legacy": "^1.3.4",
     "babel-plugin-transform-react-jsx": "^6.24.1",
@@ -52,6 +56,10 @@
     "css-loader": "^0.28.1",
     "es6-promise": "^4.1.0",
     "eslint": "^3.19.0",
+    "eslint-config-airbnb": "^15.0.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^5.0.1",
+    "eslint-plugin-react": "^7.0.1",
     "extract-text-webpack-plugin": "^2.1.0",
     "node-sass": "^4.5.2",
     "postcss": "^6.0.1",
