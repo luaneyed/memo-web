@@ -35,12 +35,13 @@ class SelectLabelModal extends React.Component {
     if (labelId === 'all') {
       return null
     }
+    const isSelected = this.state.selectedLabelIds.has(labelId)
     return (
       <div
         key={labelId}
-        className={classNames(
-          styles.label, { [styles.selected]: this.state.selectedLabelIds.has(labelId) }
-        )}
+        className={classNames(styles.label, {
+          [styles.selected]: (isSelected && !this.props.selectedClassName), [this.props.selectedClassName]: isSelected
+        })}
         onClick={() => { this.setState(({ selectedLabelIds }) => ({
           selectedLabelIds: selectedLabelIds[selectedLabelIds.has(labelId) ? 'delete' : 'add'](labelId),
         })) }}>
@@ -51,7 +52,9 @@ class SelectLabelModal extends React.Component {
 
 
   render() {
-    const { show, title, labelList, selectedLabelIds, cancel, ok, onSubmit, onCancel, ...props } = this.props
+    const {
+      show, title, labelList, selectedLabelIds, selectedClassName, cancel, ok, onSubmit, onCancel, ...props
+    } = this.props
     return (
       <Modal show={show} onHide={onCancel}>
         <div className={styles.wrapper} {...props}>
@@ -75,6 +78,7 @@ class SelectLabelModal extends React.Component {
 }
 
 SelectLabelModal.propTypes = {
+  selectedClassName: PropTypes.string,
   title: PropTypes.string,
   labelList: PropTypes.instanceOf(Immutable.List),
   selectedLabelIds: PropTypes.instanceOf(Immutable.Set),
@@ -86,6 +90,7 @@ SelectLabelModal.propTypes = {
 }
 
 SelectLabelModal.defaultProps = {
+  selectedClassName: '',
   title: '',
   labelList: Immutable.List(),
   selectedLabelIds: Immutable.Set(),

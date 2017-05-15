@@ -70,6 +70,7 @@ class MemoManager extends React.Component {
           </div>
         </div>
         <SelectLabelModal
+          selectedClassName={this.state.isAttaching ? undefined : styles.selectedDeletingLabel}
           show={this.state.showSelectLabelModal}
           title={this.props.translate(this.state.isAttaching ? 'select_labels_to_attach' : 'select_labels_to_detach')}
           labelList={this.props.labelList}

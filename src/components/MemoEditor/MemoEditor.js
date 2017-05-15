@@ -61,24 +61,26 @@ class MemoEditor extends RoutingComponent {
           value={memo.get('title')}
           placeholder={this.props.translate('enter_title')}
           onChange={newTitle => { this.props.updateMemo(this.props.memo.set('title', newTitle)) }} />
-        <div className={styles.buttons}>
-          <div
-            className={classNames(styles.selectLabel, styles.item)}
-            onClick={this.onClickSelectLabel}>
-            {this.props.translate('select_labels')}
+        <div className={styles.buttonLabelArea}>
+          <div className={styles.buttons}>
+            <div
+              className={classNames(styles.selectLabel, styles.item)}
+              onClick={this.onClickSelectLabel}>
+              {this.props.translate('select_labels')}
+            </div>
+            <div
+              className={classNames(styles.deleteMemo, styles.item)}
+              onClick={this.onClickDeleteLabel}>
+              {this.props.translate('delete_memo')}
+            </div>
           </div>
-          <div
-            className={classNames(styles.deleteMemo, styles.item)}
-            onClick={this.onClickDeleteLabel}>
-            {this.props.translate('delete_memo')}
-          </div>
-        </div>
-        <div className={styles.labels}>
-          {this.props.memo.get('labelIds').map(labelId => (
-            <span key={labelId} className={styles.label} onClick={() => { this.setCurrentLabelId(labelId) }}>
+          <div className={styles.labels}>
+            {this.props.memo.get('labelIds').map(labelId => (
+              <span key={labelId} className={styles.label} onClick={() => { this.setCurrentLabelId(labelId) }}>
               {this.props.labels.get(labelId).get('name')}
             </span>
-          ))}
+            ))}
+          </div>
         </div>
         <div className={styles.updatedAt}>{displayTime(memo.get('updatedAt'))}</div>
         <Transformer
