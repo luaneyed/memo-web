@@ -1,10 +1,12 @@
+const autoPrefixer = require('autoprefixer')
+
 module.exports = {
   plugins: [
-    require('autoprefixer')({
+    autoPrefixer({
       browsers: [
         'last 2 version',
         'ie >= 10',
       ],
-    })
-  ]
+    }),
+  ],
 }

@@ -21,7 +21,7 @@ class SelectLabelModal extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.show && !this.props.show) {
       this.setState({
-        selectedLabelIds: nextProps.selectedLabelIds
+        selectedLabelIds: nextProps.selectedLabelIds,
       })
     }
   }
@@ -42,7 +42,7 @@ class SelectLabelModal extends React.Component {
           styles.label, { [styles.selected]: this.state.selectedLabelIds.has(labelId) }
         )}
         onClick={() => { this.setState(({ selectedLabelIds }) => ({
-          selectedLabelIds: selectedLabelIds[selectedLabelIds.has(labelId) ? 'delete' : 'add'](labelId)
+          selectedLabelIds: selectedLabelIds[selectedLabelIds.has(labelId) ? 'delete' : 'add'](labelId),
         })) }}>
         {label.get('name')}
       </div>

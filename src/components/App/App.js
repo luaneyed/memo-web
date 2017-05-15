@@ -103,7 +103,7 @@ class App extends RoutingComponent {
     Promise.all([getLabels, getMemos])
       .then(() => {
         this.setState({
-          isLoading: false
+          isLoading: false,
         })
       })
   }
@@ -116,30 +116,30 @@ class App extends RoutingComponent {
     if (this.state.isLoading && !nextState.isLoading) {
       this.validateSearchQuery(nextProps, nextState)
     }
+  }
 
-    if (!nextState.labels.equals(this.state.labels) || !nextState.memos.equals(this.state.memos)) {
+  componentDidUpdate(prevProps, prevState) {
+    this.autoSelectMemo()
+
+    if (!this.state.labels.equals(prevState.labels) || !this.state.memos.equals(prevState.memos)) {
       this.setState({
-        countedLabels : nextState.labels
+        countedLabels: this.state.labels
           .map(label => label.set('memoCount', 0))
           .set('all', Immutable.Map({
             _id: 'all',
             name: '전체메모',
-            memoCount: nextState.memos.size,
+            memoCount: this.state.memos.size,
             createdAt: 0,
           }))
           .withMutations(labels => {
-            nextState.memos.forEach(memo => {
+            this.state.memos.forEach(memo => {
               memo.get('labelIds').forEach(labelId => {
                 labels.set(labelId, labels.get(labelId).set('memoCount', labels.getIn([labelId, 'memoCount']) + 1))
               })
             })
-          })
+          }),
       })
     }
-  }
-
-  componentDidUpdate() {
-    this.autoSelectMemo()
   }
 
   validateSearchQuery(props = this.props, state = this.state) {
@@ -181,7 +181,7 @@ class App extends RoutingComponent {
       const newLang = language === 'ko' ? 'en' : 'ko'
       LocalStorage.set('LANGUAGE', newLang)
       return {
-        language: newLang
+        language: newLang,
       }
     })
   }
@@ -189,7 +189,7 @@ class App extends RoutingComponent {
   toggleMemoSelecting() {
     this.setState(({ isMemoListSelecting }) => {
       const newState = {
-        isMemoListSelecting: !isMemoListSelecting
+        isMemoListSelecting: !isMemoListSelecting,
       }
       if (isMemoListSelecting) {
         newState.selectedMemoIds = Immutable.Set()
@@ -200,7 +200,7 @@ class App extends RoutingComponent {
 
   toggleSelectMemoId(memoId) {
     this.setState(({ selectedMemoIds }) => ({
-      selectedMemoIds: selectedMemoIds[selectedMemoIds.has(memoId) ? 'remove' : 'add'](memoId)
+      selectedMemoIds: selectedMemoIds[selectedMemoIds.has(memoId) ? 'remove' : 'add'](memoId),
     }))
   }
 
@@ -208,6 +208,7 @@ class App extends RoutingComponent {
     this.attachLabels(this.state.selectedMemoIds, labelIds)
       .then(() => {
         this.setState({
+          selectedMemoIds: Immutable.Set(),
           isMemoListSelecting: false,
         })
       })
@@ -217,6 +218,7 @@ class App extends RoutingComponent {
     this.detachLabels(this.state.selectedMemoIds, labelIds)
       .then(() => {
         this.setState({
+          selectedMemoIds: Immutable.Set(),
           isMemoListSelecting: false,
         })
       })
@@ -234,7 +236,7 @@ class App extends RoutingComponent {
 
   selectAllMemos() {
     this.setState(({ memos }) => ({
-      selectedMemoIds: Immutable.Set(memos.keys())
+      selectedMemoIds: Immutable.Set(memos.keys()),
     }))
   }
 
@@ -297,7 +299,7 @@ class App extends RoutingComponent {
               onClick={this.changeTab}>
               {
                 this.state.tab > 1 ?
-                  this.translate('fold_tab'):
+                  this.translate('fold_tab') :
                   this.translate('unfold_tab')
               }
             </div>
@@ -306,8 +308,8 @@ class App extends RoutingComponent {
               onClick={this.changeLanguage}>
               {
                 this.state.language === 'ko' ?
-                  "English" :
-                  "한국어"
+                  'English' :
+                  '한국어'
               }
             </div>
             <div

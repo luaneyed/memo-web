@@ -13,14 +13,14 @@ class EditModal extends React.Component {
     this.doSubmit = this.doSubmit.bind(this)
     this._refs = {}
     this.state = {
-      value: ''
+      value: '',
     }
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.show && !this.props.show) {
       this.setState({
-        value: nextProps.value || ''
+        value: nextProps.value || '',
       })
     }
   }
@@ -33,7 +33,7 @@ class EditModal extends React.Component {
 
   handleChange(e) {
     this.setState({
-      value: e.target.value
+      value: e.target.value,
     })
   }
 
