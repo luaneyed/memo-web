@@ -312,10 +312,6 @@ class App extends RoutingComponent {
                   '한국어'
               }
             </div>
-            <div
-              className={classNames(styles.changeLabel, styles.item)}>
-              {this.translate('search')}
-            </div>
           </div>
           {
             this.state.isMemoListSelecting ?
