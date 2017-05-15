@@ -27,7 +27,7 @@ export function remove(memoId) {
 }
 
 export function removeMany(memoIds) {
-  return client.delete('memos', memoIds)
+  return client.post('memos', memoIds)
 }
 
 export function attachLabels(memoIds, labelIds) {

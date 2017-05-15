@@ -225,7 +225,7 @@ class App extends RoutingComponent {
   }
 
   deleteSelectedMemos() {
-    this.deleteMemos(this.state.selectedMemoIds)
+    this.deleteMemos(this.state.selectedMemoIds.toArray())
       .then(() => {
         this.setState({
           selectedMemoIds: Immutable.Set(),

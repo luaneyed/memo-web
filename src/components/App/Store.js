@@ -141,8 +141,8 @@ export default {
     return MemoAPI.attachLabels(memoIds, labelIds)
       .then(memos => {
         const newMemos = convertMemosToImmutable(memos)
-        this.setState(({ updatedMemos }) => ({
-          memos: updatedMemos.withMutations(prevMemos => {
+        this.setState(({ memos }) => ({
+          memos: memos.withMutations(prevMemos => {
             newMemos.forEach(newMemo => {
               prevMemos.set(newMemo.get('_id'), newMemo)
             })
@@ -155,8 +155,8 @@ export default {
     return MemoAPI.detachLabels(memoIds, labelIds)
       .then(memos => {
         const newMemos = convertMemosToImmutable(memos)
-        this.setState(({ updatedMemos }) => ({
-          memos: updatedMemos.withMutations(prevMemos => {
+        this.setState(({ memos }) => ({
+          memos: memos.withMutations(prevMemos => {
             newMemos.forEach(newMemo => {
               prevMemos.set(newMemo.get('_id'), newMemo)
             })
