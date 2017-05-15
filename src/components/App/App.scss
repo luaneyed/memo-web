@@ -12,6 +12,7 @@ $header-height: 35px;
   left: 0px;
   right: 0px;
   min-width: 715px;
+  min-height: 460px;
   padding: 15px;
 
   & > *:not(:first-child) {
@@ -58,7 +59,7 @@ $header-height: 35px;
       }
     }
 
-    .memoEditor {
+    .memoEditor, .memoManager {
       position: absolute;
       top: 50px;
       bottom: 0;

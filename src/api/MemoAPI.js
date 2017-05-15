@@ -25,3 +25,15 @@ export function update(memoId, memo) {
 export function remove(memoId) {
   return client.delete(`memo/${memoId}`)
 }
+
+export function removeMany(memoIds) {
+  return client.delete('memos', memoIds)
+}
+
+export function attachLabels(memoIds, labelIds) {
+  return client.post('memos/attach_labels', { memoIds, labelIds })
+}
+
+export function detachLabels(memoIds, labelIds) {
+  return client.post('memos/detach_labels', { memoIds, labelIds })
+}

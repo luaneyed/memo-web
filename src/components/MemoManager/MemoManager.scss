@@ -1,0 +1,25 @@
+.wrapper {
+  display: flex;
+  padding: 10px;
+  justify-content: center;
+  align-items: center;
+
+  .buttons {
+    width: 300px;
+
+    & > * {
+      display: flex;
+      height: 55px;
+      border: solid 2px black;
+      padding: 5px 10px;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      cursor: pointer;
+
+      &:not(:last-of-type) {
+        margin-bottom: 20px;
+      }
+    }
+  }
+}

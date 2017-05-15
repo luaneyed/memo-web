@@ -6,7 +6,7 @@ import PropTypes from 'prop-types'
 
 /* Internal dependencies */
 import styles from './SelectLabelModal.scss'
-import Modal from '../../Modal'
+import Modal from '../Modal'
 
 class SelectLabelModal extends React.Component {
   constructor() {
@@ -51,13 +51,13 @@ class SelectLabelModal extends React.Component {
 
 
   render() {
-    const { show, labelList, selectedLabelIds, cancel, ok, onSubmit, onCancel, ...props } = this.props
+    const { show, title, labelList, selectedLabelIds, cancel, ok, onSubmit, onCancel, ...props } = this.props
     return (
       <Modal show={show} onHide={onCancel}>
         <div className={styles.wrapper} {...props}>
           <div className={styles.body}>
             <div className={styles.title}>
-              라벨 선택
+              {title}
             </div>
             <div className={styles.selector}>
               {labelList.map(this.renderLabel)}
@@ -75,6 +75,7 @@ class SelectLabelModal extends React.Component {
 }
 
 SelectLabelModal.propTypes = {
+  title: PropTypes.string,
   labelList: PropTypes.instanceOf(Immutable.List),
   selectedLabelIds: PropTypes.instanceOf(Immutable.Set),
   show: PropTypes.bool,
@@ -85,6 +86,7 @@ SelectLabelModal.propTypes = {
 }
 
 SelectLabelModal.defaultProps = {
+  title: '',
   labelList: Immutable.List(),
   selectedLabelIds: Immutable.Set(),
   show: false,

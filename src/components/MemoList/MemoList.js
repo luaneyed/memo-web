@@ -18,6 +18,7 @@ class MemoList extends RoutingComponent {
     this.onClickEditLabel = this.onClickEditLabel.bind(this)
     this.onHideEditLabelModal = this.onHideEditLabelModal.bind(this)
     this.onSubmitEditLabelModal = this.onSubmitEditLabelModal.bind(this)
+    this.onClickMemo = this.onClickMemo.bind(this)
     this.state = {
       showEditLabelModal: false,
     }
@@ -42,7 +43,28 @@ class MemoList extends RoutingComponent {
     this.props.updateLabel(this.props.currentLabel.set('name', labelName))
   }
 
+  onClickMemo(memo) {
+    if (this.props.selecting) {
+      this.props.toggleSelectMemoId(memo.get('_id'))
+    } else {
+      this.setCurrentMemo(memo)
+    }
+  }
 
+  renderMemoPreview(memo, currentMemoId) {
+    const memoId = memo.get('_id')
+    const preview = (
+      <MemoPreview
+        key={memoId}
+        className={classNames(styles.memoPreview, {
+          [styles.viewing]: !this.props.selecting && memoId === currentMemoId,
+          [styles.selected]: this.props.selectedMemoIds.has(memoId),
+        })}
+        memo={memo}
+        onClick={() => { this.onClickMemo(memo) }} />
+    )
+    return preview
+  }
 
   render() {
     const { className, memos } = this.props
@@ -56,8 +78,9 @@ class MemoList extends RoutingComponent {
             {this.props.translate('create_memo')}
           </div>
           <div
-            className={classNames(styles.startSelection, styles.item)}>
-            {this.props.translate('select_memos')}
+            className={classNames(styles.startSelection, styles.item)}
+            onClick={this.props.toggleSelecting}>
+            {this.props.translate(this.props.selecting ? 'cancel' : 'select_memos')}
           </div>
         </div>
         <div className={styles.list}>
@@ -82,14 +105,7 @@ class MemoList extends RoutingComponent {
           </div>
           {
             memos.size > 0 ?
-              memos.map(memo =>
-                <MemoPreview
-                  key={memo.get('_id')}
-                  className={styles.memoPreview}
-                  memo={memo}
-                  selected={memo.get('_id') === currentMemoId}
-                  onClick={() => { this.setCurrentMemo(memo) }} />
-              ) :
+              memos.map(memo => this.renderMemoPreview(memo, currentMemoId)) :
               <div className={styles.noMemo}>{this.props.translate('no_memo')}</div>
           }
         </div>
@@ -110,6 +126,10 @@ MemoList.propTypes = {
   className: PropTypes.string,
   currentLabel: PropTypes.instanceOf(Immutable.Map),
   memos: PropTypes.instanceOf(Immutable.List),
+  selecting: PropTypes.bool,
+  toggleSelecting: PropTypes.func,
+  toggleSelectMemoId: PropTypes.func,
+  selectedMemoIds: PropTypes.instanceOf(Immutable.Set),
   updateLabel: PropTypes.func,
   deleteLabel: PropTypes.func,
   createMemo: PropTypes.func,
@@ -120,6 +140,10 @@ MemoList.defaultProps = {
   className: '',
   currentLabel: Immutable.Map(),
   memos: Immutable.List(),
+  selecting: false,
+  toggleSelecting: () => {},
+  toggleSelectMemoId: () => {},
+  selectedMemoIds: Immutable.Set(),
   updateLabel: () => {},
   deleteLabel: () => {},
   createMemo: () => {},

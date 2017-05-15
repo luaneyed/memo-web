@@ -8,7 +8,7 @@ import Immutable from 'immutable'
 /* Internal Dependencies */
 import styles from './MemoEditor.scss'
 import Transformer from './Transformer'
-import SelectLabelModal from './SelectLabelModal'
+import SelectLabelModal from '../SelectLabelModal'
 import RoutingComponent from '../lib'
 import { displayTime } from '../../utils/momentUtils'
 
@@ -88,11 +88,11 @@ class MemoEditor extends RoutingComponent {
           onChange={newContent => { this.props.updateMemo(this.props.memo.set('content', newContent)) }} />
         <SelectLabelModal
           show={this.state.showSelectLabelModal}
+          title={this.props.translate('select_labels')}
           labelList={this.props.labelList}
           selectedLabelIds={this.props.memo.get('labelIds')}
           onCancel={this.onHideSelectLabelModal}
           onSubmit={this.onSubmitSelectLabelModal}
-          title={this.props.translate('label_name')}
           ok={this.props.translate('save')}
           cancel={this.props.translate('cancel')} />
       </div>

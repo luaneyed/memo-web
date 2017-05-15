@@ -50,8 +50,8 @@ export default ({
   createLabel: function(name) {
     return LabelAPI.create({ name })
       .then(label => {
-        this.setState(state => ({
-          labels: state.labels.set(label._id, Immutable.Map(label))
+        this.setState(({ labels }) => ({
+          labels: labels.set(label._id, Immutable.Map(label))
         }))
       })
       .catch(this.showError)
@@ -59,8 +59,8 @@ export default ({
   updateLabel: function(label) {
     return LabelAPI.update(label.get('_id'), label.toObject())
       .then(label => {
-        this.setState(state => ({
-          labels: state.labels.set(label._id, convertMemoToImmutable(label))
+        this.setState(({ labels }) => ({
+          labels: labels.set(label._id, convertMemoToImmutable(label))
         }))
       })
       .catch(this.showError)
@@ -94,8 +94,8 @@ export default ({
     })
       .then(memo => {
         const newMemoId = memo._id
-        this.setState(state => ({
-          memos: state.memos.set(newMemoId, convertMemoToImmutable(memo))
+        this.setState(({ memos }) => ({
+          memos: memos.set(newMemoId, convertMemoToImmutable(memo))
         }), () => {
           this.setCurrentMemoId(newMemoId)
         })
@@ -105,8 +105,8 @@ export default ({
   updateMemo: function(memo) {
     return MemoAPI.update(memo.get('_id'), convertMemoToObject(memo))
       .then(updatedMemo => {
-        this.setState(state => ({
-          memos: state.memos.set(updatedMemo._id, convertMemoToImmutable(updatedMemo))
+        this.setState(({ memos }) => ({
+          memos: memos.set(updatedMemo._id, convertMemoToImmutable(updatedMemo))
         }))
       })
       .catch(this.showError)
@@ -114,10 +114,54 @@ export default ({
   deleteMemo: function(memoId) {
     return MemoAPI.remove(memoId)
       .then(() => {
-        this.setState(state => ({
-          memos: state.memos.remove(memoId)
+        this.setState(({ memos }) => ({
+          memos: memos.remove(memoId)
         }))
         this.removeCurrentMemoId()
+      })
+      .catch(this.showError)
+  },
+  deleteMemos: function(memoIds) {
+    return MemoAPI.removeMany(memoIds)
+      .then(() => {
+        this.setState(({ memos }) => ({
+          memos: memos.withMutations(ms => {
+            memoIds.forEach(memoId => {
+              ms.delete(memoId)
+            })
+          })
+        }))
+        if (memoIds.includes(this.getCurrentMemoId())) {
+          this.removeCurrentMemoId()
+        }
+      })
+      .catch(this.showError)
+  },
+  attachLabels: function(memoIds, labelIds) {
+    return MemoAPI.attachLabels(memoIds, labelIds)
+      .then(memos => {
+        const newMemos = convertMemosToImmutable(memos)
+        this.setState(({ memos }) => ({
+          memos: memos.withMutations(prevMemos => {
+            newMemos.forEach(newMemo => {
+              prevMemos.set(newMemo.get('_id'),newMemo)
+            })
+          }),
+        }))
+      })
+      .catch(this.showError)
+  },
+  detachLabels: function(memoIds, labelIds) {
+    return MemoAPI.detachLabels(memoIds, labelIds)
+      .then(memos => {
+        const newMemos = convertMemosToImmutable(memos)
+        this.setState(({ memos }) => ({
+          memos: memos.withMutations(prevMemos => {
+            newMemos.forEach(newMemo => {
+              prevMemos.set(newMemo.get('_id'),newMemo)
+            })
+          }),
+        }))
       })
       .catch(this.showError)
   },

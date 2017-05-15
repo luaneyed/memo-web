@@ -73,6 +73,16 @@ $label-info-height: 35px;
   }
   .memoPreview {
     cursor: pointer;
+
+    &:hover {
+      background-color: whitesmoke;
+    }
+    &.viewing {
+      background-color: gainsboro;
+    }
+    &.selected {
+      background-color: #6f6;
+    }
   }
   .noMemo {
     display: flex;

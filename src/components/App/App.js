@@ -13,6 +13,7 @@ import RoutingComponent from '../lib'
 import LabelList from '../LabelList'
 import MemoEditor from '../MemoEditor'
 import MemoList from '../MemoList'
+import MemoManager from '../MemoManager'
 import { translations } from '../../constants'
 
 const toastWidth = 540
@@ -54,6 +55,13 @@ class App extends RoutingComponent {
   constructor() {
     super()
     this.changeTab = this.changeTab.bind(this)
+    this.toggleMemoSelecting = this.toggleMemoSelecting.bind(this)
+    this.toggleSelectMemoId = this.toggleSelectMemoId.bind(this)
+    this.attachLabelsToSelectedMemos = this.attachLabelsToSelectedMemos.bind(this)
+    this.detachLabelsToSelectedMemos = this.detachLabelsToSelectedMemos.bind(this)
+    this.deleteSelectedMemos = this.deleteSelectedMemos.bind(this)
+    this.selectAllMemos = this.selectAllMemos.bind(this)
+    this.deselectAllMemos = this.deselectAllMemos.bind(this)
     this.changeLanguage = this.changeLanguage.bind(this)
     this.translate = this.translate.bind(this)
     Object.keys(Store).forEach(method => {
@@ -77,10 +85,14 @@ class App extends RoutingComponent {
       //  combined data
       countedLabels: Immutable.Map(),
 
+      //  app data
+      selectedMemoIds: Immutable.Set(),
+
       //  UI
       isLoading: true,
       tab: 3,
       language: LocalStorage.get('LANGUAGE'),
+      isMemoListSelecting: false,
     }
   }
 
@@ -174,6 +186,64 @@ class App extends RoutingComponent {
     })
   }
 
+  toggleMemoSelecting() {
+    this.setState(({ isMemoListSelecting }) => {
+      const newState = {
+        isMemoListSelecting: !isMemoListSelecting
+      }
+      if (isMemoListSelecting) {
+        newState.selectedMemoIds = Immutable.Set()
+      }
+      return newState
+    })
+  }
+
+  toggleSelectMemoId(memoId) {
+    this.setState(({ selectedMemoIds }) => ({
+      selectedMemoIds: selectedMemoIds[selectedMemoIds.has(memoId) ? 'remove' : 'add'](memoId)
+    }))
+  }
+
+  attachLabelsToSelectedMemos(labelIds) {
+    this.attachLabels(this.state.selectedMemoIds, labelIds)
+      .then(() => {
+        this.setState({
+          isMemoListSelecting: false,
+        })
+      })
+  }
+
+  detachLabelsToSelectedMemos(labelIds) {
+    this.detachLabels(this.state.selectedMemoIds, labelIds)
+      .then(() => {
+        this.setState({
+          isMemoListSelecting: false,
+        })
+      })
+  }
+
+  deleteSelectedMemos() {
+    this.deleteMemos(this.state.selectedMemoIds)
+      .then(() => {
+        this.setState({
+          selectedMemoIds: Immutable.Set(),
+          isMemoListSelecting: false,
+        })
+      })
+  }
+
+  selectAllMemos() {
+    this.setState(({ memos }) => ({
+      selectedMemoIds: Immutable.Set(memos.keys())
+    }))
+  }
+
+  deselectAllMemos() {
+    this.setState({
+      selectedMemoIds: Immutable.Set(),
+    })
+  }
+
   translate(key) {
     return translations[this.state.language][key]
   }
@@ -210,6 +280,10 @@ class App extends RoutingComponent {
               className={styles.memoList}
               currentLabel={this.getCurrentLabel()}
               memos={memoList}
+              selecting={this.state.isMemoListSelecting}
+              toggleSelecting={this.toggleMemoSelecting}
+              toggleSelectMemoId={this.toggleSelectMemoId}
+              selectedMemoIds={this.state.selectedMemoIds}
               updateLabel={this.updateLabel}
               deleteLabel={this.deleteLabel}
               createMemo={this.createMemo}
@@ -241,14 +315,26 @@ class App extends RoutingComponent {
               {this.translate('search')}
             </div>
           </div>
-          <MemoEditor
-            className={styles.memoEditor}
-            memo={this.getCurrentMemo()}
-            labels={this.state.labels}
-            labelList={labelList}
-            updateMemo={this.updateMemo}
-            deleteMemo={this.deleteMemo}
-            translate={this.translate} />
+          {
+            this.state.isMemoListSelecting ?
+              (<MemoManager
+                className={styles.memoManager}
+                translate={this.translate}
+                labelList={labelList}
+                attachLabelsToSelectedMemos={this.attachLabelsToSelectedMemos}
+                detachLabelsToSelectedMemos={this.detachLabelsToSelectedMemos}
+                deleteSelectedMemos={this.deleteSelectedMemos}
+                selectAllMemos={this.selectAllMemos}
+                deselectAllMemos={this.deselectAllMemos} />) :
+              (<MemoEditor
+                className={styles.memoEditor}
+                memo={this.getCurrentMemo()}
+                labels={this.state.labels}
+                labelList={labelList}
+                updateMemo={this.updateMemo}
+                deleteMemo={this.deleteMemo}
+                translate={this.translate} />)
+          }
         </div>
       </div>
     )
