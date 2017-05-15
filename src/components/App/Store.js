@@ -38,6 +38,7 @@ export default {
       .then(res => {
         this.setState({ labels: listToMap(res) }, this.validateSearchQuery)
       })
+      .catch(e => console.error(e))
   },
   getMemos() {
     return MemoAPI.getList()
@@ -46,6 +47,7 @@ export default {
           memos: convertMemosToImmutable(res),
         })
       })
+      .catch(e => console.error(e))
   },
   createLabel(name) {
     return LabelAPI.create({ name })
